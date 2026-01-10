@@ -58,10 +58,11 @@ Use specific search engines:
 
 ```python
 from pysearx import search
-from pysearx.engines.duckduckgo import DuckDuckGoEngine
+from pysearx.engines.google import GoogleEngine
+from pysearx.engines.bing import BingEngine
 
-# Use only DuckDuckGo
-engines = [DuckDuckGoEngine()]
+# Use only Google and Bing
+engines = [GoogleEngine(), BingEngine()]
 results = search("web development", engines=engines)
 ```
 
@@ -87,6 +88,12 @@ Main search function.
 
 Currently supported:
 - DuckDuckGo (via HTML interface)
+- Google
+- Bing
+- Brave Search
+- Startpage
+
+By default, all engines are used when calling `search()` without specifying engines.
 
 ## Extending with New Engines
 

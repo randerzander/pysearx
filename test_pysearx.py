@@ -99,6 +99,35 @@ class TestPysearx(unittest.TestCase):
         results = search("", engines=[mock_engine])
         
         self.assertIsInstance(results, list)
+    
+    def test_all_engines_available(self):
+        """Test that all search engines are available."""
+        from pysearx.engines.duckduckgo import DuckDuckGoEngine
+        from pysearx.engines.google import GoogleEngine
+        from pysearx.engines.bing import BingEngine
+        from pysearx.engines.brave import BraveEngine
+        from pysearx.engines.startpage import StartpageEngine
+        from pysearx.search import DEFAULT_ENGINES
+        
+        # Test that all engines can be instantiated
+        engines = [
+            DuckDuckGoEngine(),
+            GoogleEngine(),
+            BingEngine(),
+            BraveEngine(),
+            StartpageEngine(),
+        ]
+        
+        self.assertEqual(len(engines), 5)
+        
+        # Test that DEFAULT_ENGINES includes all engines
+        self.assertEqual(len(DEFAULT_ENGINES), 5)
+        
+        # Test that all are SearchEngine instances
+        for engine in engines:
+            self.assertIsInstance(engine, SearchEngine)
+            self.assertTrue(hasattr(engine, 'name'))
+            self.assertTrue(hasattr(engine, 'search'))
 
 
 if __name__ == '__main__':

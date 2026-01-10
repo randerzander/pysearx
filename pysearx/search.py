@@ -8,11 +8,19 @@ search engine queries.
 from typing import List, Dict, Any, Optional
 from .base import SearchEngine
 from .engines.duckduckgo import DuckDuckGoEngine
+from .engines.google import GoogleEngine
+from .engines.bing import BingEngine
+from .engines.brave import BraveEngine
+from .engines.startpage import StartpageEngine
 
 
 # Default engines to use
 DEFAULT_ENGINES = [
     DuckDuckGoEngine(),
+    GoogleEngine(),
+    BingEngine(),
+    BraveEngine(),
+    StartpageEngine(),
 ]
 
 

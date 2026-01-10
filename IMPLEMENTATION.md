@@ -20,7 +20,11 @@ pysearx/
 │   ├── search.py            # Core search() function
 │   └── engines/
 │       ├── __init__.py
-│       └── duckduckgo.py    # DuckDuckGo engine implementation
+│       ├── duckduckgo.py    # DuckDuckGo engine implementation
+│       ├── google.py        # Google engine implementation
+│       ├── bing.py          # Bing engine implementation
+│       ├── brave.py         # Brave Search engine implementation
+│       └── startpage.py     # Startpage engine implementation
 ├── setup.py                 # Package configuration
 ├── test_pysearx.py         # Unit tests
 ├── example.py              # Usage example
@@ -41,10 +45,13 @@ pysearx/
    - Deduplicates by URL
    - Handles errors gracefully
 
-3. **DuckDuckGo Engine** (`pysearx/engines/duckduckgo.py`)
-   - Queries DuckDuckGo HTML interface
-   - Parses HTML results using lxml
-   - Returns structured results
+3. **Search Engines**
+   - **DuckDuckGo** (`pysearx/engines/duckduckgo.py`) - Queries DuckDuckGo HTML interface
+   - **Google** (`pysearx/engines/google.py`) - Queries Google search
+   - **Bing** (`pysearx/engines/bing.py`) - Queries Bing search
+   - **Brave** (`pysearx/engines/brave.py`) - Queries Brave Search
+   - **Startpage** (`pysearx/engines/startpage.py`) - Queries Startpage search
+   - All engines parse HTML results using lxml and return structured data
 
 ### API Usage
 
@@ -64,13 +71,14 @@ for result in results:
 
 ### Testing
 
-All unit tests pass (6/6):
+All unit tests pass (7/7):
 - Basic search functionality
 - Result structure validation
 - Max results limiting
 - URL deduplication
 - Error handling
 - Empty query handling
+- All engines availability check
 
 ### Verification
 
