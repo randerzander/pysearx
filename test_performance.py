@@ -3,6 +3,24 @@ Performance testing script for pysearx.
 
 This script tests 10 queries against all supported engines and collects
 performance metrics including response times, success rates, and rate limiting.
+
+USAGE:
+    python test_performance.py
+
+This will:
+1. Test all 5 search engines with 10 diverse queries
+2. Measure response times and success rates
+3. Track when rate limiting occurs
+4. Save detailed results to /tmp/performance_results.json
+5. Print a summary to the console
+
+REQUIREMENTS:
+- Internet connection (to query search engines)
+- pysearx installed: pip install -e .
+
+NOTE: The performance results in docs/performance.md are illustrative examples.
+Run this script in your own environment to get actual performance data specific
+to your network conditions, location, and time of testing.
 """
 
 import time

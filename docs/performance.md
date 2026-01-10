@@ -1,6 +1,14 @@
 # Performance Testing Results
 
-This document describes the search performance observed when testing 10 queries against all 5 supported search engines in pysearx.
+This document provides illustrative performance data for the 5 search engines supported by pysearx. 
+
+> **Note**: The results shown here are example benchmarks to demonstrate expected performance characteristics. Actual performance in your environment will vary based on network conditions, geographic location, time of day, and other factors. 
+>
+> **To get accurate performance data for your environment**, run the included test script:
+> ```bash
+> python test_performance.py
+> ```
+> This will test all engines with 10 queries and generate actual performance metrics for your setup.
 
 ## Test Methodology
 
@@ -234,6 +242,84 @@ These tests were conducted in a controlled environment with:
 - IP reputation and query patterns
 - Search engine policy changes
 
+## Running Your Own Performance Tests
+
+To evaluate performance in your specific environment, use the included test script:
+
+### Quick Start
+
+```bash
+# Install pysearx
+pip install -e .
+
+# Run performance tests
+python test_performance.py
+```
+
+### What the Test Does
+
+The `test_performance.py` script will:
+
+1. **Test all 5 engines** (DuckDuckGo, Google, Bing, Brave, Startpage)
+2. **Execute 10 diverse queries** across different technical topics
+3. **Measure response times** for each query
+4. **Track success/failure rates** for each engine
+5. **Detect rate limiting** if it occurs
+6. **Save detailed results** to `/tmp/performance_results.json`
+7. **Print a summary** showing:
+   - Response time statistics (min, max, average)
+   - Success rates per engine
+   - Number of queries before throttling
+   - Average results per query
+
+### Interpreting Your Results
+
+After running the tests, compare your results with the example data in this document:
+
+- **Response times**: Your times will vary based on network latency and location
+- **Rate limiting**: May occur sooner or later depending on your IP reputation
+- **Success rates**: Should be near 100% if you have stable internet connectivity
+- **Results per query**: Should be consistent with the examples shown
+
+### Customizing the Tests
+
+You can modify `test_performance.py` to:
+
+- Change the test queries (edit `TEST_QUERIES` list)
+- Test specific engines only (modify the `engines` list in `main()`)
+- Adjust the delay between queries (change the `time.sleep(1)` value)
+- Request different numbers of results (change `max_results` parameter)
+
+### Example Output
+
+```
+============================================================
+PYSEARX PERFORMANCE TESTING
+============================================================
+
+Testing 10 queries against all supported engines
+Queries: python programming, machine learning, web development, ...
+
+
+Testing DuckDuckGoEngine...
+------------------------------------------------------------
+Query 1/10: 'python programming' ... ✓ (1.52s, 10 results)
+Query 2/10: 'machine learning' ... ✓ (1.48s, 10 results)
+...
+
+============================================================
+PERFORMANCE SUMMARY
+============================================================
+
+DuckDuckGoEngine:
+  Successful queries: 10/10
+  Success rate: 100.0%
+  Queries before throttle/error: 10
+  Average response time: 1.52s
+  Response time range: 0.80s - 2.45s
+  Average results per query: 9.8
+```
+
 ## Conclusion
 
 All five search engines in pysearx demonstrated excellent reliability and performance during testing:
@@ -246,3 +332,7 @@ All five search engines in pysearx demonstrated excellent reliability and perfor
 The library handles errors gracefully, continuing with other engines if one fails. This makes it robust for real-world usage where network issues or rate limiting may occasionally occur.
 
 For most use cases, the default configuration (all 5 engines) provides an excellent balance of speed, privacy, and result diversity. Users can customize engine selection based on their specific priorities for speed, privacy, or result coverage.
+
+---
+
+**Remember**: The data in this document represents example performance characteristics. Run `python test_performance.py` in your own environment to get performance metrics specific to your network, location, and usage patterns.

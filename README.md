@@ -199,6 +199,22 @@ See `example.py` for a complete usage example:
 python example.py
 ```
 
+## Performance
+
+For detailed performance benchmarks and testing instructions, see [docs/performance.md](docs/performance.md).
+
+You can run your own performance tests to evaluate engine performance in your environment:
+
+```bash
+python test_performance.py
+```
+
+This will test all 5 engines with 10 queries and provide detailed metrics including:
+- Response times per engine
+- Success/failure rates
+- Rate limiting detection
+- Performance statistics and comparisons
+
 ## License
 
 This project implements functionality inspired by SearXNG (https://github.com/searxng/searxng).
