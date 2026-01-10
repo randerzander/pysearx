@@ -76,9 +76,9 @@ class MetagerEngine(SearchEngine):
                     
                     # MetaGer may use proxy URLs, extract real URL if needed
                     if 'metager.org' in url and '/click' in url:
-                        # Try to extract the actual URL from onclick or data attributes
+                        # Try to extract the actual URL from data attributes
                         real_url = link_elem[0].get('data-url', '')
-                        if real_url:
+                        if real_url and real_url.startswith('http'):
                             url = real_url
                     
                     # Extract title

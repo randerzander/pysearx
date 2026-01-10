@@ -73,7 +73,7 @@ class Search360Engine(SearchEngine):
                     
                     # 360 may use redirect URLs, extract real URL if needed
                     data_url = link_elem[0].get('data-url', '')
-                    if data_url:
+                    if data_url and data_url.startswith('http'):
                         url = data_url
                     
                     # Extract title

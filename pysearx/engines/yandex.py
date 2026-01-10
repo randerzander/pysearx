@@ -74,6 +74,7 @@ class YandexEngine(SearchEngine):
                     
                     # Yandex sometimes uses relative URLs, make them absolute
                     if url.startswith('/'):
+                        # Resolve against base domain, not the search endpoint
                         url = 'https://yandex.com' + url
                     
                     # Extract title

@@ -14,9 +14,10 @@ from ..base import SearchEngine, DEFAULT_USER_AGENT, DEFAULT_HEADERS
 class SearxEngine(SearchEngine):
     """SearX search engine implementation."""
     
-    def __init__(self, instance_url='https://searx.be'):
+    def __init__(self):
         self.name = 'SearX'
-        self.instance_url = instance_url.rstrip('/')
+        # Default instance - users can create custom instances if needed
+        self.instance_url = 'https://searx.be'
         self.base_url = f'{self.instance_url}/search'
         self.timeout = 10
         
