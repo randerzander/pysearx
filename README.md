@@ -2,6 +2,14 @@
 
 A plain Python library implementing generic search engine functionality without external services.
 
+## 🆕 NEW: API-Based Engines (No CAPTCHA/Blocking)
+
+**Avoid CAPTCHA and bot blocking issues** by using official API packages:
+- ✅ **DuckDuckGo API** - Free, no API key required ([Quick Start](QUICKSTART_API_ENGINES.md))
+- ⚠️ **Bing API** - Requires Azure API key, free tier available
+
+See [QUICKSTART_API_ENGINES.md](QUICKSTART_API_ENGINES.md) for setup and [SEARCH_PACKAGES_RESEARCH.md](SEARCH_PACKAGES_RESEARCH.md) for detailed research.
+
 ## Overview
 
 pysearx is a simple, single-process Python library that provides a generic search engine implementation inspired by SearXNG. It allows you to search the web programmatically without spinning up any external processes or services.
@@ -12,6 +20,7 @@ pysearx is a simple, single-process Python library that provides a generic searc
 - Sequential or parallel execution modes (parallel uses threading for faster results)
 - Returns results as a list of dictionaries with `title`, `url`, and `description`
 - Support for multiple search engines (14 built-in: DuckDuckGo, Google, Bing, Brave, Startpage, Qwant, Mojeek, Yahoo, Yep, SearX, Swisscows, MetaGer, 360Search, Yandex)
+- **NEW**: API-based engines that avoid CAPTCHA/blocking (DuckDuckGo, Bing)
 - Easy to extend with new search engines
 
 ## Installation
