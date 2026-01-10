@@ -65,13 +65,13 @@ class DuckDuckGoAPIEngine(SearchEngine):
                 
                 # Convert ddgs results to our standard format
                 for result in search_results:
-                    # ddgs returns: {title, href, body}
-                    # We need: {title, url, description}
+                    # ddgs package returns: {title, href, body}
+                    # We map to our standard format: {title, url, description}
                     if result.get('href') and result.get('title'):
                         results.append({
                             'title': result.get('title', ''),
-                            'url': result.get('href', ''),
-                            'description': result.get('body', '')
+                            'url': result.get('href', ''),  # href -> url
+                            'description': result.get('body', '')  # body -> description
                         })
                         
         except Exception as e:
