@@ -11,7 +11,7 @@ This will:
 1. Test all 5 search engines with 10 diverse queries
 2. Measure response times and success rates
 3. Track when rate limiting occurs
-4. Save detailed results to /tmp/performance_results.json
+4. Save detailed results to performance_results.json in your system's temp directory
 5. Print a summary to the console
 
 REQUIREMENTS:
