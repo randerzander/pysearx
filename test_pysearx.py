@@ -107,6 +107,10 @@ class TestPysearx(unittest.TestCase):
         from pysearx.engines.bing import BingEngine
         from pysearx.engines.brave import BraveEngine
         from pysearx.engines.startpage import StartpageEngine
+        from pysearx.engines.qwant import QwantEngine
+        from pysearx.engines.mojeek import MojeekEngine
+        from pysearx.engines.yahoo import YahooEngine
+        from pysearx.engines.yep import YepEngine
         from pysearx.search import DEFAULT_ENGINES
         
         # Test that all engines can be instantiated
@@ -116,12 +120,16 @@ class TestPysearx(unittest.TestCase):
             BingEngine(),
             BraveEngine(),
             StartpageEngine(),
+            QwantEngine(),
+            MojeekEngine(),
+            YahooEngine(),
+            YepEngine(),
         ]
         
-        self.assertEqual(len(engines), 5)
+        self.assertEqual(len(engines), 9)
         
         # Test that DEFAULT_ENGINES includes all engines
-        self.assertEqual(len(DEFAULT_ENGINES), 5)
+        self.assertEqual(len(DEFAULT_ENGINES), 9)
         
         # Test that all are SearchEngine instances
         for engine in engines:
