@@ -9,7 +9,6 @@ from typing import List, Dict, Any, Optional
 import threading
 import logging
 from .base import SearchEngine
-from .engines.duckduckgo import DuckDuckGoEngine
 from .engines.google import GoogleEngine
 from .engines.bing import BingEngine
 from .engines.brave import BraveEngine
@@ -24,13 +23,23 @@ from .engines.metager import MetagerEngine
 from .engines.search360 import Search360Engine
 from .engines.yandex import YandexEngine
 
+# Try to use DuckDuckGo API engine (recommended), fallback to HTML scraping
+try:
+    from .engines.duckduckgo_api import DuckDuckGoAPIEngine
+    _ddg_engine = DuckDuckGoAPIEngine()
+except ImportError:
+    # Fall back to HTML scraping if ddgs package not installed
+    from .engines.duckduckgo import DuckDuckGoEngine
+    _ddg_engine = DuckDuckGoEngine()
+
 # Configure logger for the search module
 logger = logging.getLogger(__name__)
 
 
 # Default engines to use
+# DuckDuckGo API engine is used by default (falls back to HTML if ddgs not installed)
 DEFAULT_ENGINES = [
-    DuckDuckGoEngine(),
+    _ddg_engine,
     GoogleEngine(),
     BingEngine(),
     BraveEngine(),

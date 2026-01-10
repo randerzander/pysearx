@@ -4,9 +4,11 @@ A plain Python library implementing generic search engine functionality without 
 
 ## 🆕 NEW: API-Based Engines (No CAPTCHA/Blocking)
 
-**Avoid CAPTCHA and bot blocking issues** by using official API packages:
-- ✅ **DuckDuckGo API** - Free, no API key required ([Quick Start](QUICKSTART_API_ENGINES.md))
+**DuckDuckGo API is now the DEFAULT engine!** Install `ddgs` for best results:
+- ✅ **DuckDuckGo API** - Free, no API key required, **automatically used when installed**
 - ⚠️ **Bing API** - Requires Azure API key, free tier available
+
+The library automatically uses the DuckDuckGo API engine when the `ddgs` package is available, falling back to HTML scraping if not installed.
 
 See [QUICKSTART_API_ENGINES.md](QUICKSTART_API_ENGINES.md) for setup and [SEARCH_PACKAGES_RESEARCH.md](SEARCH_PACKAGES_RESEARCH.md) for detailed research.
 
@@ -17,10 +19,11 @@ pysearx is a simple, single-process Python library that provides a generic searc
 ## Features
 
 - Simple API: just call `search(query)` to get results
+- **DuckDuckGo API used by default** when `ddgs` package is installed (no CAPTCHA/blocking!)
 - Sequential or parallel execution modes (parallel uses threading for faster results)
 - Returns results as a list of dictionaries with `title`, `url`, and `description`
 - Support for multiple search engines (14 built-in: DuckDuckGo, Google, Bing, Brave, Startpage, Qwant, Mojeek, Yahoo, Yep, SearX, Swisscows, MetaGer, 360Search, Yandex)
-- **NEW**: API-based engines that avoid CAPTCHA/blocking (DuckDuckGo, Bing)
+- API-based engines that avoid CAPTCHA/blocking (DuckDuckGo, Bing)
 - Easy to extend with new search engines
 
 ## Installation
@@ -55,12 +58,12 @@ pip install -e .[all-apis]
 
 ## Usage
 
-Basic usage:
+Basic usage (uses DuckDuckGo API automatically if `ddgs` is installed):
 
 ```python
 from pysearx import search
 
-# Search for a query
+# Search for a query - uses DuckDuckGo API by default (if ddgs installed)
 results = search("python programming")
 
 # Process results
@@ -71,6 +74,8 @@ for result in results:
     print(f"Engine: {result['engine']}")
     print()
 ```
+
+**Note**: With `ddgs` installed, the default search uses the DuckDuckGo API engine which avoids CAPTCHA and blocking. Without `ddgs`, it falls back to HTML scraping.
 
 Limit the number of results:
 

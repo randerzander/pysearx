@@ -10,9 +10,11 @@ This guide helps you get started with the new API-based search engines that avoi
 
 **Best Option**: DuckDuckGo API (`ddgs` package) - Free, no API key, no CAPTCHA.
 
+**NEW**: DuckDuckGo API is now the **DEFAULT** - just install `ddgs` and use `search()` normally!
+
 ## Installation
 
-### Option 1: DuckDuckGo API (Recommended) ✅
+### Option 1: DuckDuckGo API (Recommended) ✅ **NOW DEFAULT**
 
 ```bash
 pip install pysearx[ddg-api]
@@ -22,6 +24,8 @@ Or just the package:
 ```bash
 pip install ddgs
 ```
+
+**That's it!** The DuckDuckGo API engine is now used automatically by default when you call `search()`.
 
 ### Option 2: Bing API (Optional, requires API key)
 
@@ -37,13 +41,27 @@ pip install pysearx[all-apis]
 
 ## Usage Examples
 
-### DuckDuckGo API (Recommended)
+### DuckDuckGo API (Now Default!) ✅
+
+**Simple usage** (DuckDuckGo API used automatically):
+
+```python
+from pysearx import search
+
+# That's it! Uses DuckDuckGo API automatically if ddgs is installed
+results = search("python programming", max_results=10)
+
+for result in results:
+    print(f"{result['title']}: {result['url']}")
+```
+
+**Explicit usage** (same as above):
 
 ```python
 from pysearx import search
 from pysearx.engines.duckduckgo_api import DuckDuckGoAPIEngine
 
-# Create engine
+# Create engine (not needed - it's already the default!)
 ddg_api = DuckDuckGoAPIEngine()
 
 # Search
@@ -53,11 +71,26 @@ for result in results:
     print(f"{result['title']}: {result['url']}")
 ```
 
+**Automatic Fallback:**
+
+If `ddgs` is not installed, pysearx automatically falls back to HTML scraping for DuckDuckGo:
+
+```python
+# Without ddgs installed:
+# - Uses DuckDuckGoEngine (HTML scraping)
+# - May encounter CAPTCHA/blocking
+
+# With ddgs installed:
+# - Uses DuckDuckGoAPIEngine (API)
+# - No CAPTCHA/blocking issues
+```
+
 **Benefits:**
 - ✅ Free (no API key)
 - ✅ No CAPTCHA
 - ✅ No blocking
 - ✅ More reliable than HTML scraping
+- ✅ **Used by default** - no code changes needed!
 
 ### Bing API (Optional)
 
