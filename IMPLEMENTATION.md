@@ -71,7 +71,7 @@ for result in results:
 
 ### Testing
 
-All unit tests pass (7/7):
+All unit tests pass (9/9):
 - Basic search functionality
 - Result structure validation
 - Max results limiting
@@ -79,14 +79,16 @@ All unit tests pass (7/7):
 - Error handling
 - Empty query handling
 - All engines availability check
+- Parallel search mode
+- Parallel vs sequential comparison
 
 ### Verification
 
 The implementation has been verified to:
-- ✅ Run in a single process (no threading/multiprocessing)
 - ✅ Provide simple `search(query)` API
+- ✅ Support both sequential and parallel execution modes
 - ✅ Return list of dicts with title, url, description
-- ✅ Pass all unit tests
+- ✅ Pass all unit tests (9/9)
 - ✅ Pass code review
 - ✅ Pass security scan (0 vulnerabilities)
 
@@ -94,7 +96,7 @@ The implementation has been verified to:
 
 This implementation is intentionally simplified compared to SearXNG:
 
-1. **Single Process**: No threading or async processing
+1. **Execution Modes**: Sequential (single-threaded) by default, with optional parallel mode using threading
 2. **No Web Server**: Pure library, not a web service
 3. **Simplified Configuration**: Minimal setup required
 4. **Focused API**: Just `search()`, no plugins or advanced features

@@ -128,6 +128,37 @@ class TestPysearx(unittest.TestCase):
             self.assertIsInstance(engine, SearchEngine)
             self.assertTrue(hasattr(engine, 'name'))
             self.assertTrue(hasattr(engine, 'search'))
+    
+    def test_parallel_search(self):
+        """Test parallel search mode."""
+        mock_engine1 = MockSearchEngine()
+        mock_engine2 = MockSearchEngine()
+        
+        # Test parallel mode returns results
+        results = search("test", engines=[mock_engine1, mock_engine2], parallel=True)
+        
+        self.assertIsInstance(results, list)
+        self.assertGreater(len(results), 0)
+        
+        # Results should have engine field
+        for result in results:
+            self.assertIn('engine', result)
+    
+    def test_parallel_vs_sequential(self):
+        """Test that parallel and sequential modes produce similar results."""
+        mock_engine = MockSearchEngine()
+        
+        # Get results from both modes
+        sequential_results = search("test", engines=[mock_engine], parallel=False)
+        parallel_results = search("test", engines=[mock_engine], parallel=True)
+        
+        # Both should return results
+        self.assertGreater(len(sequential_results), 0)
+        self.assertGreater(len(parallel_results), 0)
+        
+        # Both should have same structure
+        self.assertIn('title', sequential_results[0])
+        self.assertIn('title', parallel_results[0])
 
 
 if __name__ == '__main__':

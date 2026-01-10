@@ -6,6 +6,7 @@ search engine queries.
 """
 
 from typing import List, Dict, Any, Optional
+import threading
 from .base import SearchEngine
 from .engines.duckduckgo import DuckDuckGoEngine
 from .engines.google import GoogleEngine
@@ -25,7 +26,7 @@ DEFAULT_ENGINES = [
 
 
 def search(query: str, engines: Optional[List[SearchEngine]] = None, 
-           max_results: int = 10) -> List[Dict[str, Any]]:
+           max_results: int = 10, parallel: bool = False) -> List[Dict[str, Any]]:
     """
     Search for a query across multiple search engines.
     
@@ -36,6 +37,8 @@ def search(query: str, engines: Optional[List[SearchEngine]] = None,
         query: The search query string
         engines: List of SearchEngine instances to use. If None, uses defaults.
         max_results: Maximum number of results to return (default: 10)
+        parallel: If True, queries all engines simultaneously using threading.
+                 If False (default), queries engines sequentially.
         
     Returns:
         List of result dictionaries, each containing:
@@ -48,10 +51,24 @@ def search(query: str, engines: Optional[List[SearchEngine]] = None,
         >>> results = search("python programming")
         >>> for result in results:
         ...     print(f"{result['title']}: {result['url']}")
+        
+        >>> # Use parallel mode for faster results
+        >>> results = search("python programming", parallel=True)
     """
     if engines is None:
         engines = DEFAULT_ENGINES
     
+    if parallel:
+        return _search_parallel(query, engines, max_results)
+    else:
+        return _search_sequential(query, engines, max_results)
+
+
+def _search_sequential(query: str, engines: List[SearchEngine], 
+                      max_results: int) -> List[Dict[str, Any]]:
+    """
+    Sequential search implementation (original behavior).
+    """
     all_results = []
     seen_urls = set()
     
@@ -77,5 +94,48 @@ def search(query: str, engines: Optional[List[SearchEngine]] = None,
             # Log error but continue with other engines
             print(f"Error searching with {engine.__class__.__name__}: {e}")
             continue
+    
+    return all_results[:max_results]
+
+
+def _search_parallel(query: str, engines: List[SearchEngine], 
+                    max_results: int) -> List[Dict[str, Any]]:
+    """
+    Parallel search implementation using threading.
+    
+    Queries all engines simultaneously and aggregates results.
+    """
+    results_lock = threading.Lock()
+    all_results = []
+    seen_urls = set()
+    
+    def search_engine(engine: SearchEngine):
+        """Thread worker function to search a single engine."""
+        try:
+            engine_results = engine.search(query)
+            
+            # Add engine name and deduplicate by URL
+            with results_lock:
+                for result in engine_results:
+                    url = result.get('url', '')
+                    if url and url not in seen_urls:
+                        result['engine'] = engine.__class__.__name__
+                        all_results.append(result)
+                        seen_urls.add(url)
+                        
+        except Exception as e:
+            # Log error but continue with other engines
+            print(f"Error searching with {engine.__class__.__name__}: {e}")
+    
+    # Create and start threads for each engine
+    threads = []
+    for engine in engines:
+        thread = threading.Thread(target=search_engine, args=(engine,))
+        thread.start()
+        threads.append(thread)
+    
+    # Wait for all threads to complete
+    for thread in threads:
+        thread.join()
     
     return all_results[:max_results]
