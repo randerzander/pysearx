@@ -8,7 +8,13 @@ and parses the results.
 from typing import List, Dict, Any
 import requests
 from lxml import html
-from ..base import SearchEngine, DEFAULT_USER_AGENT
+from ..base import SearchEngine, DEFAULT_USER_AGENT, DEFAULT_HEADERS
+
+try:
+    from ..browser import fetch_with_browser
+    PLAYWRIGHT_AVAILABLE = True
+except ImportError:
+    PLAYWRIGHT_AVAILABLE = False
 
 
 class StartpageEngine(SearchEngine):
@@ -18,6 +24,7 @@ class StartpageEngine(SearchEngine):
         self.name = 'Startpage'
         self.base_url = 'https://www.startpage.com/sp/search'
         self.timeout = 10
+        self.use_browser = PLAYWRIGHT_AVAILABLE
         
     def search(self, query: str, **kwargs) -> List[Dict[str, Any]]:
         """
@@ -33,27 +40,36 @@ class StartpageEngine(SearchEngine):
         results = []
         
         try:
-            # Prepare the request
-            params = {
-                'query': query,
-                'cat': 'web',
-            }
-            
-            headers = {
-                'User-Agent': DEFAULT_USER_AGENT
-            }
-            
-            # Make the request
-            response = requests.get(
-                self.base_url,
-                params=params,
-                headers=headers,
-                timeout=self.timeout
-            )
-            response.raise_for_status()
-            
-            # Parse HTML response
-            tree = html.fromstring(response.content)
+            if self.use_browser and PLAYWRIGHT_AVAILABLE:
+                # Use Playwright
+                from urllib.parse import urlencode
+                params = {
+                    'query': query,
+                    'cat': 'web',
+                }
+                url = f"{self.base_url}?{urlencode(params)}"
+                response_content = fetch_with_browser(url, timeout=self.timeout * 1000)
+                tree = html.fromstring(response_content)
+            else:
+                # Fallback to requests
+                params = {
+                    'query': query,
+                    'cat': 'web',
+                }
+                
+                # Use realistic headers
+                headers = DEFAULT_HEADERS.copy()
+                headers['Referer'] = 'https://www.startpage.com/'
+                
+                # Make the request
+                response = requests.get(
+                    self.base_url,
+                    params=params,
+                    headers=headers,
+                    timeout=self.timeout
+                )
+                response.raise_for_status()
+                tree = html.fromstring(response.content)
             
             # Find result sections - Startpage uses w-gl__result class
             result_elements = tree.xpath('//div[contains(@class, "w-gl__result")]') or \

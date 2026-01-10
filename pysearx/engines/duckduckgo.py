@@ -8,7 +8,13 @@ and parses the results without requiring JavaScript.
 from typing import List, Dict, Any
 import requests
 from lxml import html
-from ..base import SearchEngine, DEFAULT_USER_AGENT
+from ..base import SearchEngine, DEFAULT_USER_AGENT, DEFAULT_HEADERS
+
+try:
+    from ..browser import fetch_with_browser
+    PLAYWRIGHT_AVAILABLE = True
+except ImportError:
+    PLAYWRIGHT_AVAILABLE = False
 
 
 class DuckDuckGoEngine(SearchEngine):
@@ -18,6 +24,7 @@ class DuckDuckGoEngine(SearchEngine):
         self.name = 'DuckDuckGo'
         self.base_url = 'https://html.duckduckgo.com/html/'
         self.timeout = 10
+        self.use_browser = PLAYWRIGHT_AVAILABLE  # Use browser if available
         
     def search(self, query: str, **kwargs) -> List[Dict[str, Any]]:
         """
@@ -33,28 +40,38 @@ class DuckDuckGoEngine(SearchEngine):
         results = []
         
         try:
-            # Prepare the request
-            params = {
-                'q': query,
-                'b': '',  # For first page
-                'kl': 'wt-wt',  # All regions
-            }
-            
-            headers = {
-                'User-Agent': DEFAULT_USER_AGENT
-            }
-            
-            # Make the request
-            response = requests.post(
-                self.base_url,
-                data=params,
-                headers=headers,
-                timeout=self.timeout
-            )
-            response.raise_for_status()
-            
-            # Parse HTML response
-            tree = html.fromstring(response.content)
+            if self.use_browser and PLAYWRIGHT_AVAILABLE:
+                # Use Playwright for better bot detection evasion
+                from urllib.parse import urlencode
+                params = {
+                    'q': query,
+                    'b': '',
+                    'kl': 'wt-wt',
+                }
+                url = f"{self.base_url}?{urlencode(params)}"
+                response_content = fetch_with_browser(url, timeout=self.timeout * 1000)
+                tree = html.fromstring(response_content)
+            else:
+                # Fallback to requests
+                params = {
+                    'q': query,
+                    'b': '',
+                    'kl': 'wt-wt',
+                }
+                
+                # Use realistic headers
+                headers = DEFAULT_HEADERS.copy()
+                headers['Referer'] = 'https://duckduckgo.com/'
+                
+                # Make the request
+                response = requests.post(
+                    self.base_url,
+                    data=params,
+                    headers=headers,
+                    timeout=self.timeout
+                )
+                response.raise_for_status()
+                tree = html.fromstring(response.content)
             
             # Find result links
             # DuckDuckGo HTML structure uses result-link class for links
