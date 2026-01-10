@@ -13,11 +13,11 @@ This document provides illustrative performance data for the 5 search engines su
 ## Test Methodology
 
 ### Test Setup
-- **Date**: January 2026
 - **Test Queries**: 10 diverse queries across different technical topics
 - **Engines Tested**: All 5 supported engines (DuckDuckGo, Google, Bing, Brave, Startpage)
 - **Results Requested**: 10 results per query
 - **Delay Between Queries**: 1 second (to be respectful to search engines)
+- **Note**: Data shown is from example test runs to illustrate expected characteristics
 
 ### Test Queries
 The following queries were used to evaluate performance across various technical domains:
@@ -265,7 +265,7 @@ The `test_performance.py` script will:
 3. **Measure response times** for each query
 4. **Track success/failure rates** for each engine
 5. **Detect rate limiting** if it occurs
-6. **Save detailed results** to `/tmp/performance_results.json`
+6. **Save detailed results** to `performance_results.json` in your system's temp directory
 7. **Print a summary** showing:
    - Response time statistics (min, max, average)
    - Success rates per engine

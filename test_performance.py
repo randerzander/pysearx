@@ -25,6 +25,8 @@ to your network conditions, location, and time of testing.
 
 import time
 import json
+import os
+import tempfile
 from pysearx import search
 from pysearx.engines.duckduckgo import DuckDuckGoEngine
 from pysearx.engines.google import GoogleEngine
@@ -121,11 +123,17 @@ def calculate_statistics(results):
     stats = {}
     
     if results['response_times']:
-        response_times = results['response_times']
+        response_times = sorted(results['response_times'])
         stats['min_response_time'] = min(response_times)
         stats['max_response_time'] = max(response_times)
         stats['avg_response_time'] = sum(response_times) / len(response_times)
-        stats['median_response_time'] = sorted(response_times)[len(response_times) // 2]
+        
+        # Calculate proper median for even and odd length lists
+        n = len(response_times)
+        if n % 2 == 0:
+            stats['median_response_time'] = (response_times[n // 2 - 1] + response_times[n // 2]) / 2
+        else:
+            stats['median_response_time'] = response_times[n // 2]
     else:
         stats['min_response_time'] = 0
         stats['max_response_time'] = 0
@@ -182,13 +190,13 @@ def main():
         if result['errors']:
             print(f"  Errors encountered: {len(result['errors'])}")
     
-    # Save results to JSON for documentation
-    output_file = '/tmp/performance_results.json'
+    # Save results to JSON for documentation (cross-platform temp directory)
+    output_file = os.path.join(tempfile.gettempdir(), 'performance_results.json')
     with open(output_file, 'w') as f:
         json.dump(all_results, f, indent=2)
     
     print(f"\n\nDetailed results saved to: {output_file}")
-    print("\nUse this data to create docs/performance.md")
+    print("\nUse this data to update docs/performance.md with your actual results")
     
     return all_results
 
