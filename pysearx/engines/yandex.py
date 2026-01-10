@@ -9,6 +9,12 @@ import requests
 from lxml import html
 from ..base import SearchEngine, DEFAULT_USER_AGENT, DEFAULT_HEADERS
 
+try:
+    from ..browser import fetch_with_browser
+    PLAYWRIGHT_AVAILABLE = True
+except ImportError:
+    PLAYWRIGHT_AVAILABLE = False
+
 
 class YandexEngine(SearchEngine):
     """Yandex search engine implementation."""
@@ -17,6 +23,7 @@ class YandexEngine(SearchEngine):
         self.name = 'Yandex'
         self.base_url = 'https://yandex.com/search/'
         self.timeout = 10
+        self.use_browser = PLAYWRIGHT_AVAILABLE
         
     def search(self, query: str, **kwargs) -> List[Dict[str, Any]]:
         """
@@ -32,27 +39,34 @@ class YandexEngine(SearchEngine):
         results = []
         
         try:
-            # Prepare the request
-            params = {
-                'text': query,
-                'lr': '84',  # English region
-            }
-            
-            # Use realistic headers
-            headers = DEFAULT_HEADERS.copy()
-            headers['Referer'] = 'https://yandex.com/'
-            
-            # Make the request
-            response = requests.get(
-                self.base_url,
-                params=params,
-                headers=headers,
-                timeout=self.timeout
-            )
-            response.raise_for_status()
-            
-            # Parse HTML response
-            tree = html.fromstring(response.content)
+            if self.use_browser and PLAYWRIGHT_AVAILABLE:
+                # Use Playwright
+                from urllib.parse import urlencode
+                params = {
+                    'text': query,
+                    'lr': '84',
+                }
+                url = f"{self.base_url}?{urlencode(params)}"
+                response_content = fetch_with_browser(url, timeout=self.timeout * 1000)
+                tree = html.fromstring(response_content)
+            else:
+                # Fallback to requests
+                params = {
+                    'text': query,
+                    'lr': '84',
+                }
+                
+                headers = DEFAULT_HEADERS.copy()
+                headers['Referer'] = 'https://yandex.com/'
+                
+                response = requests.get(
+                    self.base_url,
+                    params=params,
+                    headers=headers,
+                    timeout=self.timeout
+                )
+                response.raise_for_status()
+                tree = html.fromstring(response.content)
             
             # Find result divs - Yandex uses serp-item class
             result_elements = tree.xpath('//li[contains(@class, "serp-item")]') or \

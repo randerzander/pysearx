@@ -8,7 +8,13 @@ and parses the results.
 from typing import List, Dict, Any
 import requests
 from lxml import html
-from ..base import SearchEngine, DEFAULT_USER_AGENT
+from ..base import SearchEngine, DEFAULT_USER_AGENT, DEFAULT_HEADERS
+
+try:
+    from ..browser import fetch_with_browser
+    PLAYWRIGHT_AVAILABLE = True
+except ImportError:
+    PLAYWRIGHT_AVAILABLE = False
 
 
 class QwantEngine(SearchEngine):
@@ -18,6 +24,7 @@ class QwantEngine(SearchEngine):
         self.name = 'Qwant'
         self.base_url = 'https://lite.qwant.com/'
         self.timeout = 10
+        self.use_browser = PLAYWRIGHT_AVAILABLE
         
     def search(self, query: str, **kwargs) -> List[Dict[str, Any]]:
         """
@@ -33,30 +40,40 @@ class QwantEngine(SearchEngine):
         results = []
         
         try:
-            # Prepare the request
-            params = {
-                'q': query,
-                'locale': 'en_us',
-                'l': 'en',
-                's': '0',  # safesearch off
-                'p': '1',  # page number
-            }
-            
-            headers = {
-                'User-Agent': DEFAULT_USER_AGENT
-            }
-            
-            # Make the request
-            response = requests.get(
-                self.base_url,
-                params=params,
-                headers=headers,
-                timeout=self.timeout
-            )
-            response.raise_for_status()
-            
-            # Parse HTML response
-            tree = html.fromstring(response.content)
+            if self.use_browser and PLAYWRIGHT_AVAILABLE:
+                # Use Playwright
+                from urllib.parse import urlencode
+                params = {
+                    'q': query,
+                    'locale': 'en_us',
+                    'l': 'en',
+                    's': '0',
+                    'p': '1',
+                }
+                url = f"{self.base_url}?{urlencode(params)}"
+                response_content = fetch_with_browser(url, timeout=self.timeout * 1000)
+                tree = html.fromstring(response_content)
+            else:
+                # Fallback to requests
+                params = {
+                    'q': query,
+                    'locale': 'en_us',
+                    'l': 'en',
+                    's': '0',
+                    'p': '1',
+                }
+                
+                headers = DEFAULT_HEADERS.copy()
+                headers['Referer'] = 'https://lite.qwant.com/'
+                
+                response = requests.get(
+                    self.base_url,
+                    params=params,
+                    headers=headers,
+                    timeout=self.timeout
+                )
+                response.raise_for_status()
+                tree = html.fromstring(response.content)
             
             # Find result articles
             result_elements = tree.xpath('//section/article')

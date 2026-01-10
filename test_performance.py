@@ -33,6 +33,15 @@ from pysearx.engines.google import GoogleEngine
 from pysearx.engines.bing import BingEngine
 from pysearx.engines.brave import BraveEngine
 from pysearx.engines.startpage import StartpageEngine
+from pysearx.engines.mojeek import MojeekEngine
+from pysearx.engines.qwant import QwantEngine
+from pysearx.engines.yahoo import YahooEngine
+from pysearx.engines.yep import YepEngine
+from pysearx.engines.metager import MetagerEngine
+from pysearx.engines.search360 import Search360Engine
+from pysearx.engines.searx import SearxEngine
+from pysearx.engines.swisscows import SwisscowsEngine
+from pysearx.engines.yandex import YandexEngine
 
 
 # Test queries covering various topics
@@ -162,6 +171,15 @@ def main():
         BingEngine(),
         BraveEngine(),
         StartpageEngine(),
+        MojeekEngine(),
+        QwantEngine(),
+        YahooEngine(),
+        YepEngine(),
+        MetagerEngine(),
+        Search360Engine(),
+        SearxEngine(),
+        SwisscowsEngine(),
+        YandexEngine(),
     ]
     
     all_results = []

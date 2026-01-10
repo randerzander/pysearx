@@ -9,7 +9,7 @@ from typing import List, Dict, Any
 import requests
 from lxml import html
 from urllib.parse import unquote
-from ..base import SearchEngine, DEFAULT_USER_AGENT
+from ..base import SearchEngine, DEFAULT_USER_AGENT, DEFAULT_HEADERS
 
 
 class YahooEngine(SearchEngine):
@@ -40,9 +40,8 @@ class YahooEngine(SearchEngine):
                 'iscqry': '',  # Required for first page results
             }
             
-            headers = {
-                'User-Agent': DEFAULT_USER_AGENT
-            }
+            headers = DEFAULT_HEADERS.copy()
+            headers['Referer'] = 'https://search.yahoo.com/'
             
             # Yahoo uses cookies for settings
             cookies = {

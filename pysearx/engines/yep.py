@@ -8,7 +8,7 @@ This implementation queries the Yep API and parses JSON results.
 from typing import List, Dict, Any
 import re
 import requests
-from ..base import SearchEngine, DEFAULT_USER_AGENT
+from ..base import SearchEngine, DEFAULT_USER_AGENT, DEFAULT_HEADERS
 
 
 class YepEngine(SearchEngine):
@@ -42,11 +42,9 @@ class YepEngine(SearchEngine):
                 'type': 'web',
             }
             
-            headers = {
-                'User-Agent': DEFAULT_USER_AGENT,
-                'Referer': 'https://yep.com/',
-                'Origin': 'https://yep.com'
-            }
+            headers = DEFAULT_HEADERS.copy()
+            headers['Referer'] = 'https://yep.com/'
+            headers['Origin'] = 'https://yep.com'
             
             # Make the request
             response = requests.get(

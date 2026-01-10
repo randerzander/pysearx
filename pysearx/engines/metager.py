@@ -10,6 +10,12 @@ import requests
 from lxml import html
 from ..base import SearchEngine, DEFAULT_USER_AGENT, DEFAULT_HEADERS
 
+try:
+    from ..browser import fetch_with_browser
+    PLAYWRIGHT_AVAILABLE = True
+except ImportError:
+    PLAYWRIGHT_AVAILABLE = False
+
 
 class MetagerEngine(SearchEngine):
     """MetaGer search engine implementation."""

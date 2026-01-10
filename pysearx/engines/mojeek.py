@@ -8,7 +8,7 @@ and parses the results.
 from typing import List, Dict, Any
 import requests
 from lxml import html
-from ..base import SearchEngine, DEFAULT_USER_AGENT
+from ..base import SearchEngine, DEFAULT_USER_AGENT, DEFAULT_HEADERS
 
 
 class MojeekEngine(SearchEngine):
@@ -41,9 +41,8 @@ class MojeekEngine(SearchEngine):
                 'arc': 'all', # region: all
             }
             
-            headers = {
-                'User-Agent': DEFAULT_USER_AGENT
-            }
+            headers = DEFAULT_HEADERS.copy()
+            headers['Referer'] = 'https://www.mojeek.com/'
             
             # Make the request
             response = requests.get(
