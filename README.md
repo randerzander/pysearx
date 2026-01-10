@@ -134,6 +134,25 @@ from pysearx.engines.google import GoogleEngine
 results = search("python", engines=[GoogleEngine()])
 ```
 
+### Technical Implementation
+
+**Engine Order:**
+The default engine order (DuckDuckGo, Google, Bing, Brave, Startpage) is arbitrary. You can customize the order by explicitly passing engines in your preferred sequence.
+
+**HTTP Requests:**
+All searches are performed using plain HTTP requests via the `requests` library:
+- GET requests for most engines (Google, Bing, Brave, Startpage)
+- POST requests for DuckDuckGo
+- HTML responses are parsed using `lxml`
+
+**User-Agent Header:**
+Yes, the library uses a browser-like User-Agent header to avoid being blocked:
+```
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+```
+
+This mimics Chrome 120 on Windows 10 and is used across all search engines. Without this header, many search engines would block or return different results for automated requests. The User-Agent is defined in `pysearx/base.py` as `DEFAULT_USER_AGENT` and can be customized if needed.
+
 ## Extending with New Engines
 
 To add a new search engine, create a class that inherits from `SearchEngine`:
