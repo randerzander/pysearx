@@ -24,7 +24,11 @@ pysearx/
 │       ├── google.py        # Google engine implementation
 │       ├── bing.py          # Bing engine implementation
 │       ├── brave.py         # Brave Search engine implementation
-│       └── startpage.py     # Startpage engine implementation
+│       ├── startpage.py     # Startpage engine implementation
+│       ├── qwant.py         # Qwant engine implementation
+│       ├── mojeek.py        # Mojeek engine implementation
+│       ├── yahoo.py         # Yahoo engine implementation
+│       └── yep.py           # Yep engine implementation
 ├── setup.py                 # Package configuration
 ├── test_pysearx.py         # Unit tests
 ├── example.py              # Usage example
@@ -51,7 +55,11 @@ pysearx/
    - **Bing** (`pysearx/engines/bing.py`) - Queries Bing search
    - **Brave** (`pysearx/engines/brave.py`) - Queries Brave Search
    - **Startpage** (`pysearx/engines/startpage.py`) - Queries Startpage search
-   - All engines parse HTML results using lxml and return structured data
+   - **Qwant** (`pysearx/engines/qwant.py`) - Queries Qwant Lite HTML interface
+   - **Mojeek** (`pysearx/engines/mojeek.py`) - Queries Mojeek independent search
+   - **Yahoo** (`pysearx/engines/yahoo.py`) - Queries Yahoo search with URL detracking
+   - **Yep** (`pysearx/engines/yep.py`) - Queries Yep JSON API (by Ahrefs)
+   - Most engines parse HTML results using lxml; Yep uses JSON API
 
 ### API Usage
 
