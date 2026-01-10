@@ -8,7 +8,7 @@ and parses the results without requiring JavaScript.
 from typing import List, Dict, Any
 import requests
 from lxml import html
-from ..base import SearchEngine
+from ..base import SearchEngine, DEFAULT_USER_AGENT
 
 
 class DuckDuckGoEngine(SearchEngine):
@@ -41,7 +41,7 @@ class DuckDuckGoEngine(SearchEngine):
             }
             
             headers = {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                'User-Agent': DEFAULT_USER_AGENT
             }
             
             # Make the request
@@ -84,7 +84,7 @@ class DuckDuckGoEngine(SearchEngine):
                             'description': description
                         })
                         
-                except Exception as e:
+                except (AttributeError, IndexError, KeyError, TypeError):
                     # Skip malformed results
                     continue
             
