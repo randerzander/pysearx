@@ -8,9 +8,10 @@ and parses the results without requiring JavaScript.
 from typing import List, Dict, Any
 import requests
 from lxml import html
+from ..base import SearchEngine
 
 
-class DuckDuckGoEngine:
+class DuckDuckGoEngine(SearchEngine):
     """DuckDuckGo search engine implementation."""
     
     def __init__(self):

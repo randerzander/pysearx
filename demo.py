@@ -7,8 +7,31 @@ This script demonstrates that pysearx:
 3. Returns a list of dicts with title, url, and description
 """
 
-from test_pysearx import MockSearchEngine
-from pysearx import search
+from pysearx import search, SearchEngine
+
+
+class MockSearchEngine(SearchEngine):
+    """Mock search engine for demonstration purposes."""
+    
+    def search(self, query, **kwargs):
+        """Return mock results."""
+        return [
+            {
+                'title': f'Result 1 for {query}',
+                'url': 'https://example.com/1',
+                'description': 'This is the first result'
+            },
+            {
+                'title': f'Result 2 for {query}',
+                'url': 'https://example.com/2',
+                'description': 'This is the second result'
+            },
+            {
+                'title': f'Result 3 for {query}',
+                'url': 'https://example.com/3',
+                'description': 'This is the third result'
+            }
+        ]
 
 print("=" * 70)
 print("PYSEARX LIBRARY DEMONSTRATION")

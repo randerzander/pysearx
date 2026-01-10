@@ -6,8 +6,7 @@ These tests verify the core functionality of the library.
 
 import unittest
 from unittest.mock import Mock, patch
-from pysearx import search
-from pysearx.search import SearchEngine
+from pysearx import search, SearchEngine
 
 
 class MockSearchEngine(SearchEngine):
