@@ -5,6 +5,7 @@ MetaGer is a privacy-focused metasearch engine from Germany.
 """
 
 from typing import List, Dict, Any
+from urllib.parse import urlparse
 import requests
 from lxml import html
 from ..base import SearchEngine, DEFAULT_USER_AGENT, DEFAULT_HEADERS
@@ -75,11 +76,18 @@ class MetagerEngine(SearchEngine):
                         continue
                     
                     # MetaGer may use proxy URLs, extract real URL if needed
-                    if 'metager.org' in url and '/click' in url:
-                        # Try to extract the actual URL from data attributes
-                        real_url = link_elem[0].get('data-url', '')
-                        if real_url and real_url.startswith('http'):
-                            url = real_url
+                    # Check if this is a MetaGer proxy URL by parsing the domain
+                    try:
+                        parsed_url = urlparse(url)
+                        # Only process if this is explicitly a metager.org URL with /click path
+                        if parsed_url.netloc == 'metager.org' and '/click' in parsed_url.path:
+                            # Try to extract the actual URL from data attributes
+                            real_url = link_elem[0].get('data-url', '')
+                            if real_url and real_url.startswith('http'):
+                                url = real_url
+                    except ValueError:
+                        # If URL parsing fails, just use the original URL
+                        pass
                     
                     # Extract title
                     title_elem = elem.xpath('.//h2 | .//h3 | .//span[contains(@class, "title")]')
