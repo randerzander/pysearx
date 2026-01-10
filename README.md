@@ -93,7 +93,7 @@ Currently supported:
 To add a new search engine, create a class that inherits from `SearchEngine`:
 
 ```python
-from pysearx.search import SearchEngine
+from pysearx import SearchEngine
 
 class MyCustomEngine(SearchEngine):
     def search(self, query, **kwargs):
