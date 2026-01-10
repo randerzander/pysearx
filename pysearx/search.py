@@ -7,12 +7,16 @@ search engine queries.
 
 from typing import List, Dict, Any, Optional
 import threading
+import logging
 from .base import SearchEngine
 from .engines.duckduckgo import DuckDuckGoEngine
 from .engines.google import GoogleEngine
 from .engines.bing import BingEngine
 from .engines.brave import BraveEngine
 from .engines.startpage import StartpageEngine
+
+# Configure logger for the search module
+logger = logging.getLogger(__name__)
 
 
 # Default engines to use
@@ -92,7 +96,7 @@ def _search_sequential(query: str, engines: List[SearchEngine],
                 
         except Exception as e:
             # Log error but continue with other engines
-            print(f"Error searching with {engine.__class__.__name__}: {e}")
+            logger.error(f"Error searching with {engine.__class__.__name__}: {e}")
             continue
     
     return all_results[:max_results]
@@ -104,6 +108,11 @@ def _search_parallel(query: str, engines: List[SearchEngine],
     Parallel search implementation using threading.
     
     Queries all engines simultaneously and aggregates results.
+    
+    Note: All threads run to completion. The max_results limit is applied
+    after all results are collected. This means all engines complete their
+    queries even if enough results are found early. This is a trade-off
+    for the simplicity and speed benefit of parallel execution.
     """
     results_lock = threading.Lock()
     all_results = []
@@ -125,7 +134,7 @@ def _search_parallel(query: str, engines: List[SearchEngine],
                         
         except Exception as e:
             # Log error but continue with other engines
-            print(f"Error searching with {engine.__class__.__name__}: {e}")
+            logger.error(f"Error searching with {engine.__class__.__name__}: {e}")
     
     # Create and start threads for each engine
     threads = []
