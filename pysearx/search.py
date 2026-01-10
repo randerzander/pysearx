@@ -25,10 +25,15 @@ from .engines.yandex import YandexEngine
 
 # Try to use DuckDuckGo API engine (recommended), fallback to HTML scraping
 try:
-    from .engines.duckduckgo_api import DuckDuckGoAPIEngine
-    _ddg_engine = DuckDuckGoAPIEngine()
-except ImportError:
-    # Fall back to HTML scraping if ddgs package not installed
+    from .engines.duckduckgo_api import DuckDuckGoAPIEngine, is_available
+    if is_available():
+        _ddg_engine = DuckDuckGoAPIEngine()
+    else:
+        # ddgs package not available, use HTML scraping
+        from .engines.duckduckgo import DuckDuckGoEngine
+        _ddg_engine = DuckDuckGoEngine()
+except (ImportError, Exception):
+    # Fall back to HTML scraping if API engine import fails
     from .engines.duckduckgo import DuckDuckGoEngine
     _ddg_engine = DuckDuckGoEngine()
 
