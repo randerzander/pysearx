@@ -18,6 +18,11 @@ from .engines.qwant import QwantEngine
 from .engines.mojeek import MojeekEngine
 from .engines.yahoo import YahooEngine
 from .engines.yep import YepEngine
+from .engines.searx import SearxEngine
+from .engines.swisscows import SwisscowsEngine
+from .engines.metager import MetagerEngine
+from .engines.search360 import Search360Engine
+from .engines.yandex import YandexEngine
 
 # Configure logger for the search module
 logger = logging.getLogger(__name__)
@@ -34,6 +39,11 @@ DEFAULT_ENGINES = [
     MojeekEngine(),
     YahooEngine(),
     YepEngine(),
+    SearxEngine(),
+    SwisscowsEngine(),
+    MetagerEngine(),
+    Search360Engine(),
+    YandexEngine(),
 ]
 
 

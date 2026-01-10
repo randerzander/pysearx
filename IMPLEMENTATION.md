@@ -28,7 +28,12 @@ pysearx/
 │       ├── qwant.py         # Qwant engine implementation
 │       ├── mojeek.py        # Mojeek engine implementation
 │       ├── yahoo.py         # Yahoo engine implementation
-│       └── yep.py           # Yep engine implementation
+│       ├── yep.py           # Yep engine implementation
+│       ├── searx.py         # SearX engine implementation
+│       ├── swisscows.py     # Swisscows engine implementation
+│       ├── metager.py       # MetaGer engine implementation
+│       ├── search360.py     # 360Search engine implementation
+│       └── yandex.py        # Yandex engine implementation
 ├── setup.py                 # Package configuration
 ├── test_pysearx.py         # Unit tests
 ├── example.py              # Usage example
@@ -59,6 +64,11 @@ pysearx/
    - **Mojeek** (`pysearx/engines/mojeek.py`) - Queries Mojeek independent search
    - **Yahoo** (`pysearx/engines/yahoo.py`) - Queries Yahoo search with URL detracking
    - **Yep** (`pysearx/engines/yep.py`) - Queries Yep JSON API (by Ahrefs)
+   - **SearX** (`pysearx/engines/searx.py`) - Queries other SearX instances (default: searx.be)
+   - **Swisscows** (`pysearx/engines/swisscows.py`) - Queries Swisscows privacy-focused search
+   - **MetaGer** (`pysearx/engines/metager.py`) - Queries MetaGer metasearch engine
+   - **360Search** (`pysearx/engines/search360.py`) - Queries 360 Search (Chinese search engine)
+   - **Yandex** (`pysearx/engines/yandex.py`) - Queries Yandex Russian search engine
    - Most engines parse HTML results using lxml; Yep uses JSON API
 
 ### API Usage
@@ -86,7 +96,7 @@ All unit tests pass (9/9):
 - URL deduplication
 - Error handling
 - Empty query handling
-- All engines availability check
+- All engines availability check (14 engines)
 - Parallel search mode
 - Parallel vs sequential comparison
 
