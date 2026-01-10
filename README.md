@@ -74,7 +74,7 @@ Main search function.
 
 **Parameters:**
 - `query` (str): The search query string
-- `engines` (list, optional): List of SearchEngine instances to use. Defaults to built-in engines.
+- `engines` (list, optional): List of SearchEngine instances to use. If `None` (default), all 5 built-in engines are used (DuckDuckGo, Google, Bing, Brave, Startpage).
 - `max_results` (int, optional): Maximum number of results to return. Default is 10.
 
 **Returns:**
@@ -83,6 +83,13 @@ Main search function.
   - `url`: Result URL (str)
   - `description`: Result description/snippet (str)
   - `engine`: Name of the engine that returned this result (str)
+
+**Behavior:**
+- Queries engines sequentially in order
+- Aggregates results from all engines
+- Automatically deduplicates by URL (first occurrence wins)
+- Stops when `max_results` is reached or all engines exhausted
+- If an engine fails, continues with remaining engines
 
 ## Supported Search Engines
 
@@ -93,7 +100,39 @@ Currently supported:
 - Brave Search
 - Startpage
 
-By default, all engines are used when calling `search()` without specifying engines.
+### How Multiple Engines Work
+
+**By default, all 5 engines are used** when you call `search()` without specifying the `engines` parameter.
+
+**Result Merging:**
+- Engines are queried **sequentially** in the order listed above (DuckDuckGo, Google, Bing, Brave, Startpage)
+- Results from all engines are **aggregated** into a single list
+- **Deduplication** is performed by URL - if the same URL appears from multiple engines, only the first occurrence is kept
+- The search continues until `max_results` is reached or all engines have been queried
+- Each result includes an `engine` field indicating which search engine returned it
+
+**Example:**
+```python
+from pysearx import search
+
+# Uses all 5 engines, returns up to 10 results total
+results = search("python programming", max_results=10)
+
+# Results might come from different engines:
+# results[0]['engine'] = 'DuckDuckGoEngine'
+# results[1]['engine'] = 'DuckDuckGoEngine'
+# results[2]['engine'] = 'GoogleEngine'
+# results[3]['engine'] = 'BingEngine'
+# etc.
+```
+
+To use only specific engines, pass them explicitly:
+```python
+from pysearx.engines.google import GoogleEngine
+
+# Uses only Google
+results = search("python", engines=[GoogleEngine()])
+```
 
 ## Extending with New Engines
 
