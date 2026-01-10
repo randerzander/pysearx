@@ -14,6 +14,10 @@ from .engines.google import GoogleEngine
 from .engines.bing import BingEngine
 from .engines.brave import BraveEngine
 from .engines.startpage import StartpageEngine
+from .engines.qwant import QwantEngine
+from .engines.mojeek import MojeekEngine
+from .engines.yahoo import YahooEngine
+from .engines.yep import YepEngine
 
 # Configure logger for the search module
 logger = logging.getLogger(__name__)
@@ -26,6 +30,10 @@ DEFAULT_ENGINES = [
     BingEngine(),
     BraveEngine(),
     StartpageEngine(),
+    QwantEngine(),
+    MojeekEngine(),
+    YahooEngine(),
+    YepEngine(),
 ]
 
 

@@ -11,7 +11,7 @@ pysearx is a simple, single-process Python library that provides a generic searc
 - Simple API: just call `search(query)` to get results
 - Sequential or parallel execution modes (parallel uses threading for faster results)
 - Returns results as a list of dictionaries with `title`, `url`, and `description`
-- Support for multiple search engines (5 built-in: DuckDuckGo, Google, Bing, Brave, Startpage)
+- Support for multiple search engines (9 built-in: DuckDuckGo, Google, Bing, Brave, Startpage, Qwant, Mojeek, Yahoo, Yep)
 - Easy to extend with new search engines
 
 ## Installation
@@ -62,7 +62,7 @@ from pysearx import search
 # Search all engines simultaneously using threading
 results = search("python programming", parallel=True)
 
-# Parallel mode is especially useful with all 5 engines
+# Parallel mode is especially useful with all 9 engines
 # to get results faster
 ```
 
@@ -86,7 +86,7 @@ Main search function.
 
 **Parameters:**
 - `query` (str): The search query string
-- `engines` (list, optional): List of SearchEngine instances to use. If `None` (default), all 5 built-in engines are used (DuckDuckGo, Google, Bing, Brave, Startpage).
+- `engines` (list, optional): List of SearchEngine instances to use. If `None` (default), all 9 built-in engines are used (DuckDuckGo, Google, Bing, Brave, Startpage, Qwant, Mojeek, Yahoo, Yep).
 - `max_results` (int, optional): Maximum number of results to return. Default is 10.
 - `parallel` (bool, optional): If `True`, queries all engines simultaneously using threading for faster results. If `False` (default), queries engines sequentially. Default is `False`.
 
@@ -112,13 +112,17 @@ Currently supported:
 - Bing
 - Brave Search
 - Startpage
+- Qwant (via Lite interface)
+- Mojeek
+- Yahoo
+- Yep (by Ahrefs)
 
 ### How Multiple Engines Work
 
-**By default, all 5 engines are used** when you call `search()` without specifying the `engines` parameter.
+**By default, all 9 engines are used** when you call `search()` without specifying the `engines` parameter.
 
 **Sequential Mode (default, `parallel=False`):**
-- Engines are queried **sequentially** in the order listed above (DuckDuckGo, Google, Bing, Brave, Startpage)
+- Engines are queried **sequentially** in the order listed above (DuckDuckGo, Google, Bing, Brave, Startpage, Qwant, Mojeek, Yahoo, Yep)
 - Results from all engines are **aggregated** into a single list
 - **Deduplication** is performed by URL - if the same URL appears from multiple engines, only the first occurrence is kept
 - The search continues until `max_results` is reached or all engines have been queried
@@ -129,7 +133,7 @@ Currently supported:
 - Results are aggregated as they come in from each thread
 - Same **deduplication** by URL is applied
 - **Faster** overall search time since engines run in parallel
-- Useful when querying all 5 engines to minimize total wait time
+- Useful when querying all 9 engines to minimize total wait time
 
 **Example:**
 ```python
