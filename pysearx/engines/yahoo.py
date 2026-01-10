@@ -124,14 +124,21 @@ class YahooEngine(SearchEngine):
         """Remove Yahoo-specific tracking URL to get the actual URL."""
         endings = ['/RS', '/RK']
         endpositions = []
-        start = url_string.find('http', url_string.find('/RU=') + 1)
+        
+        # Find the position of /RU= marker
+        ru_pos = url_string.find('/RU=')
+        if ru_pos == -1:
+            return url_string
+        
+        # Find the actual URL after /RU=
+        start = url_string.find('http', ru_pos + 1)
         
         for ending in endings:
             endpos = url_string.rfind(ending)
             if endpos > -1:
                 endpositions.append(endpos)
         
-        if start == 0 or len(endpositions) == 0:
+        if start <= 0 or len(endpositions) == 0:
             return url_string
         
         end = min(endpositions)

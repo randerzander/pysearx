@@ -74,7 +74,7 @@ class MojeekEngine(SearchEngine):
                     title = title_elem[0].text_content().strip()
                     
                     # Extract description/snippet
-                    snippet_elem = elem.xpath('..//p[@class="s"]')
+                    snippet_elem = elem.xpath('../p[@class="s"]')
                     description = ''
                     if snippet_elem:
                         description = snippet_elem[0].text_content().strip()

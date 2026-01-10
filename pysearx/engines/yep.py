@@ -6,6 +6,7 @@ This implementation queries the Yep API and parses JSON results.
 """
 
 from typing import List, Dict, Any
+import re
 import requests
 from ..base import SearchEngine, DEFAULT_USER_AGENT
 
@@ -77,7 +78,6 @@ class YepEngine(SearchEngine):
                     # Clean HTML from snippet
                     if snippet:
                         # Simple HTML tag removal
-                        import re
                         snippet = re.sub(r'<[^>]+>', '', snippet)
                     
                     # Only add if we have at least title and URL
