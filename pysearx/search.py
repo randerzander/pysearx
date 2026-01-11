@@ -52,8 +52,8 @@ DEFAULT_ENGINES = [
     QwantEngine(),
     MojeekEngine(),
     YahooEngine(),
-    YepEngine(),
-    SearxEngine(),
+    # YepEngine(),  # Disabled: Returns 403 errors
+    # SearxEngine(),  # Disabled: Returns 403 errors
     SwisscowsEngine(),
     MetagerEngine(),
     Search360Engine(),
