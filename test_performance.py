@@ -5,18 +5,20 @@ This script tests 10 queries against all supported engines and collects
 performance metrics including response times, success rates, and rate limiting.
 
 USAGE:
-    python test_performance.py
+    python test_performance.py [--chart]
 
 This will:
 1. Test all 5 search engines with 10 diverse queries
 2. Measure response times and success rates
 3. Track when rate limiting occurs
-4. Save detailed results to performance_results.json in your system's temp directory
+4. Save detailed results to performance_results.json in the current directory
 5. Print a summary to the console
+6. Optionally generate an interactive chart (--chart flag)
 
 REQUIREMENTS:
 - Internet connection (to query search engines)
 - pysearx installed: pip install -e .
+- For charts: pip install plotly
 
 NOTE: The performance results in docs/performance.md are illustrative examples.
 Run this script in your own environment to get actual performance data specific
@@ -26,7 +28,7 @@ to your network conditions, location, and time of testing.
 import time
 import json
 import os
-import tempfile
+import sys
 from pysearx import search
 from pysearx.engines.duckduckgo import DuckDuckGoEngine
 from pysearx.engines.google import GoogleEngine
@@ -95,12 +97,22 @@ def test_engine_performance(engine, queries):
             end_time = time.time()
             
             response_time = end_time - start_time
-            results['response_times'].append(response_time)
-            results['successful_queries'] += 1
-            results['total_results'] += len(query_results)
-            results['queries_before_throttle'] = i
             
-            print(f"✓ ({response_time:.2f}s, {len(query_results)} results)")
+            # Check for 0 results - treat as failure
+            if len(query_results) == 0:
+                results['failed_queries'] += 1
+                results['errors'].append({
+                    'query': query,
+                    'error': 'No results returned',
+                    'query_number': i
+                })
+                print(f"✗ No results returned ({response_time:.2f}s)")
+            else:
+                results['response_times'].append(response_time)
+                results['successful_queries'] += 1
+                results['total_results'] += len(query_results)
+                results['queries_before_throttle'] = i
+                print(f"✓ ({response_time:.2f}s, {len(query_results)} results)")
             
             # Add a small delay between queries to be respectful
             time.sleep(1)
@@ -119,9 +131,12 @@ def test_engine_performance(engine, queries):
             
             print(f"✗ Error: {error_msg[:50]}...")
             
-            # Check if this looks like rate limiting
-            if 'timeout' in error_msg.lower() or 'too many' in error_msg.lower():
-                print(f"  (Possible rate limiting detected at query {i})")
+            # Check if this looks like rate limiting or HTTP error codes
+            error_lower = error_msg.lower()
+            if ('timeout' in error_lower or 'too many' in error_lower or 
+                '429' in error_msg or '400' in error_msg or '401' in error_msg or 
+                '403' in error_msg or '404' in error_msg):
+                print(f"  (Rate limiting or HTTP error detected at query {i})")
                 break
     
     return results
@@ -155,13 +170,94 @@ def calculate_statistics(results):
     return stats
 
 
+def create_performance_chart(results, output_file='performance_chart.html'):
+    """Create an interactive performance chart using plotly."""
+    try:
+        import plotly.express as px
+        import plotly.graph_objects as go
+        from plotly.subplots import make_subplots
+        import pandas as pd
+    except ImportError:
+        print("\nWarning: plotly not installed. Install with: pip install plotly")
+        return
+    
+    # Prepare data for visualization
+    engines = []
+    success_rates = []
+    avg_response_times = []
+    avg_results = []
+    
+    for result in results:
+        stats = result['statistics']
+        engines.append(result['engine'].replace('Engine', ''))
+        success_rates.append(stats['success_rate'])
+        avg_response_times.append(stats['avg_response_time'])
+        avg_results.append(stats['avg_results_per_query'])
+    
+    # Create subplots
+    fig = make_subplots(
+        rows=2, cols=2,
+        subplot_titles=('Success Rate (%)', 'Average Response Time (s)', 
+                       'Average Results per Query', 'Queries Completed'),
+        specs=[[{'type': 'bar'}, {'type': 'bar'}],
+               [{'type': 'bar'}, {'type': 'bar'}]]
+    )
+    
+    # Success rate
+    fig.add_trace(
+        go.Bar(x=engines, y=success_rates, name='Success Rate',
+               marker_color='green'),
+        row=1, col=1
+    )
+    
+    # Response time
+    fig.add_trace(
+        go.Bar(x=engines, y=avg_response_times, name='Response Time',
+               marker_color='blue'),
+        row=1, col=2
+    )
+    
+    # Average results
+    fig.add_trace(
+        go.Bar(x=engines, y=avg_results, name='Avg Results',
+               marker_color='orange'),
+        row=2, col=1
+    )
+    
+    # Queries completed
+    queries_completed = [r['successful_queries'] for r in results]
+    fig.add_trace(
+        go.Bar(x=engines, y=queries_completed, name='Queries Completed',
+               marker_color='purple'),
+        row=2, col=2
+    )
+    
+    # Update layout
+    fig.update_layout(
+        title_text='PySearx Performance Metrics',
+        showlegend=False,
+        height=800
+    )
+    
+    fig.update_xaxes(tickangle=45)
+    
+    # Save chart
+    fig.write_html(output_file)
+    print(f"\nInteractive chart saved to: {output_file}")
+
+
 def main():
     """Run performance tests on all engines."""
+    # Check for --chart flag
+    generate_chart = '--chart' in sys.argv
+    
     print("=" * 60)
     print("PYSEARX PERFORMANCE TESTING")
     print("=" * 60)
     print(f"\nTesting {len(TEST_QUERIES)} queries against all supported engines")
     print(f"Queries: {', '.join(TEST_QUERIES[:3])}, ...")
+    if generate_chart:
+        print("Chart generation: ENABLED")
     print()
     
     # Initialize all engines
@@ -208,13 +304,17 @@ def main():
         if result['errors']:
             print(f"  Errors encountered: {len(result['errors'])}")
     
-    # Save results to JSON for documentation (cross-platform temp directory)
-    output_file = os.path.join(tempfile.gettempdir(), 'performance_results.json')
+    # Save results to JSON in current working directory
+    output_file = 'performance_results.json'
     with open(output_file, 'w') as f:
         json.dump(all_results, f, indent=2)
     
     print(f"\n\nDetailed results saved to: {output_file}")
     print("\nUse this data to update docs/performance.md with your actual results")
+    
+    # Generate chart if requested
+    if generate_chart:
+        create_performance_chart(all_results)
     
     return all_results
 

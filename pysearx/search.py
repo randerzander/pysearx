@@ -45,19 +45,19 @@ logger = logging.getLogger(__name__)
 # DuckDuckGo API engine is used by default (falls back to HTML if ddgs not installed)
 DEFAULT_ENGINES = [
     _ddg_engine,
-    GoogleEngine(),
-    BingEngine(),
     BraveEngine(),
-    StartpageEngine(),
-    QwantEngine(),
     MojeekEngine(),
     YahooEngine(),
+    Search360Engine(),
+    # GoogleEngine(),  # Disabled by user
+    # BingEngine(),  # Disabled by user
+    # StartpageEngine(),  # Disabled by user
+    # QwantEngine(),  # Disabled by user
     # YepEngine(),  # Disabled: Returns 403 errors
     # SearxEngine(),  # Disabled: Returns 403 errors
-    SwisscowsEngine(),
-    MetagerEngine(),
-    Search360Engine(),
-    YandexEngine(),
+    # SwisscowsEngine(),  # Disabled by user
+    # MetagerEngine(),  # Disabled by user
+    # YandexEngine(),  # Disabled by user
 ]
 
 
