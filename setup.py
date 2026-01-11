@@ -10,5 +10,20 @@ setup(
         'requests>=2.25.0',
         'lxml>=4.6.0',
     ],
+    extras_require={
+        # DuckDuckGo API support (recommended, avoids CAPTCHA/blocking)
+        'ddg-api': [
+            'ddgs>=9.0.0',
+        ],
+        # Bing API support (optional, requires Azure API key)
+        'bing-api': [
+            'azure-cognitiveservices-search-websearch>=2.0.0',
+        ],
+        # All optional API integrations
+        'all-apis': [
+            'ddgs>=9.0.0',
+            'azure-cognitiveservices-search-websearch>=2.0.0',
+        ],
+    },
     python_requires='>=3.7',
 )

@@ -2,6 +2,16 @@
 
 A plain Python library implementing generic search engine functionality without external services.
 
+## 🆕 NEW: API-Based Engines (No CAPTCHA/Blocking)
+
+**DuckDuckGo API is now the DEFAULT engine!** Install `ddgs` for best results:
+- ✅ **DuckDuckGo API** - Free, no API key required, **automatically used when installed**
+- ⚠️ **Bing API** - Requires Azure API key, free tier available
+
+The library automatically uses the DuckDuckGo API engine when the `ddgs` package is available, falling back to HTML scraping if not installed.
+
+See [QUICKSTART_API_ENGINES.md](QUICKSTART_API_ENGINES.md) for setup and [SEARCH_PACKAGES_RESEARCH.md](SEARCH_PACKAGES_RESEARCH.md) for detailed research.
+
 ## Overview
 
 pysearx is a simple, single-process Python library that provides a generic search engine implementation inspired by SearXNG. It allows you to search the web programmatically without spinning up any external processes or services.
@@ -9,31 +19,51 @@ pysearx is a simple, single-process Python library that provides a generic searc
 ## Features
 
 - Simple API: just call `search(query)` to get results
+- **DuckDuckGo API used by default** when `ddgs` package is installed (no CAPTCHA/blocking!)
 - Sequential or parallel execution modes (parallel uses threading for faster results)
 - Returns results as a list of dictionaries with `title`, `url`, and `description`
 - Support for multiple search engines (14 built-in: DuckDuckGo, Google, Bing, Brave, Startpage, Qwant, Mojeek, Yahoo, Yep, SearX, Swisscows, MetaGer, 360Search, Yandex)
+- API-based engines that avoid CAPTCHA/blocking (DuckDuckGo, Bing)
 - Easy to extend with new search engines
 
 ## Installation
 
+Basic installation:
 ```bash
 pip install -e .
 ```
 
+**Recommended**: Install with DuckDuckGo API support (avoids CAPTCHA/blocking):
+```bash
+pip install -e .[ddg-api]
+```
+
+Install with all optional API integrations:
+```bash
+pip install -e .[all-apis]
+```
+
 ## Requirements
 
+**Core requirements:**
 - Python >= 3.7
 - requests >= 2.25.0
 - lxml >= 4.6.0
 
+**Optional (recommended):**
+- ddgs >= 9.0.0 - DuckDuckGo API support (no CAPTCHA/blocking issues)
+
+**Optional (requires API key):**
+- azure-cognitiveservices-search-websearch >= 2.0.0 - Bing API support
+
 ## Usage
 
-Basic usage:
+Basic usage (uses DuckDuckGo API automatically if `ddgs` is installed):
 
 ```python
 from pysearx import search
 
-# Search for a query
+# Search for a query - uses DuckDuckGo API by default (if ddgs installed)
 results = search("python programming")
 
 # Process results
@@ -44,6 +74,8 @@ for result in results:
     print(f"Engine: {result['engine']}")
     print()
 ```
+
+**Note**: With `ddgs` installed, the default search uses the DuckDuckGo API engine which avoids CAPTCHA and blocking. Without `ddgs`, it falls back to HTML scraping.
 
 Limit the number of results:
 
@@ -78,6 +110,29 @@ engines = [GoogleEngine(), BingEngine()]
 results = search("web development", engines=engines)
 ```
 
+**Recommended**: Use API-based engines to avoid CAPTCHA/blocking:
+
+```python
+from pysearx import search
+from pysearx.engines.duckduckgo_api import DuckDuckGoAPIEngine
+
+# Use DuckDuckGo API (no CAPTCHA, more reliable)
+# Requires: pip install pysearx[ddg-api]
+ddg_api = DuckDuckGoAPIEngine()
+results = search("python programming", engines=[ddg_api])
+```
+
+For Bing API (requires Azure API key):
+
+```python
+from pysearx.engines.bing_api import BingAPIEngine
+
+# Requires: pip install pysearx[bing-api]
+# Get API key from: https://portal.azure.com/
+bing_api = BingAPIEngine(api_key="YOUR_BING_API_KEY")
+results = search("web development", engines=[bing_api])
+```
+
 ## API Reference
 
 ### `search(query, engines=None, max_results=10, parallel=False)`
@@ -106,6 +161,8 @@ Main search function.
 
 ## Supported Search Engines
 
+### HTML-Based Engines (Default)
+
 Currently supported:
 - DuckDuckGo (via HTML interface)
 - Google
@@ -121,6 +178,38 @@ Currently supported:
 - MetaGer
 - 360Search (Chinese search engine)
 - Yandex
+
+**Note**: HTML-based engines may encounter CAPTCHA or bot blocking issues. For better reliability, use API-based engines below.
+
+### API-Based Engines (Recommended)
+
+**DuckDuckGo API Engine** (`DuckDuckGoAPIEngine`) - **RECOMMENDED** ✅
+- **Package**: `ddgs` (pip install pysearx[ddg-api])
+- **Cost**: Free, no API key required
+- **Reliability**: No CAPTCHA or blocking issues
+- **Maintenance**: Well-maintained, active development
+- **Use case**: Best choice for DuckDuckGo searches
+
+```python
+from pysearx.engines.duckduckgo_api import DuckDuckGoAPIEngine
+ddg = DuckDuckGoAPIEngine()
+results = ddg.search("python programming")
+```
+
+**Bing API Engine** (`BingAPIEngine`) - Optional
+- **Package**: `azure-cognitiveservices-search-websearch` (pip install pysearx[bing-api])
+- **Cost**: Requires Azure API key (free tier: 1,000 requests/month)
+- **Reliability**: Official Microsoft API, 100% reliable
+- **Setup**: Requires Azure subscription and API key
+- **Use case**: Enterprise applications needing guaranteed reliability
+
+```python
+from pysearx.engines.bing_api import BingAPIEngine
+bing = BingAPIEngine(api_key="YOUR_API_KEY")
+results = bing.search("python programming")
+```
+
+**See also**: `SEARCH_PACKAGES_RESEARCH.md` for detailed research findings on these packages.
 
 ### How Multiple Engines Work
 
