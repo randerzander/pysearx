@@ -9,13 +9,14 @@ from typing import List, Dict, Any
 import requests
 from lxml import html
 from urllib.parse import unquote
-from ..base import SearchEngine, DEFAULT_USER_AGENT, DEFAULT_HEADERS
+from ..base import SearchEngine, RateLimitMixin, DEFAULT_USER_AGENT, DEFAULT_HEADERS
 
 
-class YahooEngine(SearchEngine):
+class YahooEngine(RateLimitMixin, SearchEngine):
     """Yahoo search engine implementation."""
     
     def __init__(self):
+        RateLimitMixin.__init__(self)
         self.name = 'Yahoo'
         self.base_url = 'https://search.yahoo.com/search'
         self.timeout = 10
@@ -31,6 +32,9 @@ class YahooEngine(SearchEngine):
         Returns:
             List of result dictionaries with title, url, and description
         """
+        # Check if we're currently rate limited
+        self._check_rate_limit()
+        
         results = []
         
         try:
@@ -111,7 +115,10 @@ class YahooEngine(SearchEngine):
                     continue
             
         except requests.RequestException as e:
-            # Network or HTTP errors
+            error_str = str(e)
+            # Check for rate limit
+            if self._is_rate_limit_error(error_str):
+                self._handle_rate_limit()
             raise Exception(f"Failed to query Yahoo: {e}")
         except Exception as e:
             # Parsing or other errors

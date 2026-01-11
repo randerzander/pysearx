@@ -1,0 +1,878 @@
+[
+  {
+    "engine": "DuckDuckGoEngine",
+    "total_queries": 10,
+    "successful_queries": 0,
+    "failed_queries": 10,
+    "response_times": [],
+    "total_results": 0,
+    "errors": [
+      {
+        "query": "python programming",
+        "error": "No results returned",
+        "query_number": 1
+      },
+      {
+        "query": "machine learning",
+        "error": "No results returned",
+        "query_number": 2
+      },
+      {
+        "query": "web development",
+        "error": "No results returned",
+        "query_number": 3
+      },
+      {
+        "query": "data science",
+        "error": "No results returned",
+        "query_number": 4
+      },
+      {
+        "query": "artificial intelligence",
+        "error": "No results returned",
+        "query_number": 5
+      },
+      {
+        "query": "cloud computing",
+        "error": "No results returned",
+        "query_number": 6
+      },
+      {
+        "query": "cybersecurity",
+        "error": "No results returned",
+        "query_number": 7
+      },
+      {
+        "query": "blockchain technology",
+        "error": "No results returned",
+        "query_number": 8
+      },
+      {
+        "query": "quantum computing",
+        "error": "No results returned",
+        "query_number": 9
+      },
+      {
+        "query": "natural language processing",
+        "error": "No results returned",
+        "query_number": 10
+      }
+    ],
+    "queries_before_throttle": 0,
+    "statistics": {
+      "min_response_time": 0,
+      "max_response_time": 0,
+      "avg_response_time": 0,
+      "median_response_time": 0,
+      "success_rate": 0.0,
+      "avg_results_per_query": 0
+    }
+  },
+  {
+    "engine": "GoogleEngine",
+    "total_queries": 10,
+    "successful_queries": 0,
+    "failed_queries": 10,
+    "response_times": [],
+    "total_results": 0,
+    "errors": [
+      {
+        "query": "python programming",
+        "error": "No results returned",
+        "query_number": 1
+      },
+      {
+        "query": "machine learning",
+        "error": "No results returned",
+        "query_number": 2
+      },
+      {
+        "query": "web development",
+        "error": "No results returned",
+        "query_number": 3
+      },
+      {
+        "query": "data science",
+        "error": "No results returned",
+        "query_number": 4
+      },
+      {
+        "query": "artificial intelligence",
+        "error": "No results returned",
+        "query_number": 5
+      },
+      {
+        "query": "cloud computing",
+        "error": "No results returned",
+        "query_number": 6
+      },
+      {
+        "query": "cybersecurity",
+        "error": "No results returned",
+        "query_number": 7
+      },
+      {
+        "query": "blockchain technology",
+        "error": "No results returned",
+        "query_number": 8
+      },
+      {
+        "query": "quantum computing",
+        "error": "No results returned",
+        "query_number": 9
+      },
+      {
+        "query": "natural language processing",
+        "error": "No results returned",
+        "query_number": 10
+      }
+    ],
+    "queries_before_throttle": 0,
+    "statistics": {
+      "min_response_time": 0,
+      "max_response_time": 0,
+      "avg_response_time": 0,
+      "median_response_time": 0,
+      "success_rate": 0.0,
+      "avg_results_per_query": 0
+    }
+  },
+  {
+    "engine": "BingEngine",
+    "total_queries": 10,
+    "successful_queries": 1,
+    "failed_queries": 9,
+    "response_times": [
+      1.9101011753082275
+    ],
+    "total_results": 10,
+    "errors": [
+      {
+        "query": "python programming",
+        "error": "No results returned",
+        "query_number": 1
+      },
+      {
+        "query": "machine learning",
+        "error": "No results returned",
+        "query_number": 2
+      },
+      {
+        "query": "web development",
+        "error": "No results returned",
+        "query_number": 3
+      },
+      {
+        "query": "data science",
+        "error": "No results returned",
+        "query_number": 4
+      },
+      {
+        "query": "cloud computing",
+        "error": "No results returned",
+        "query_number": 6
+      },
+      {
+        "query": "cybersecurity",
+        "error": "No results returned",
+        "query_number": 7
+      },
+      {
+        "query": "blockchain technology",
+        "error": "No results returned",
+        "query_number": 8
+      },
+      {
+        "query": "quantum computing",
+        "error": "No results returned",
+        "query_number": 9
+      },
+      {
+        "query": "natural language processing",
+        "error": "No results returned",
+        "query_number": 10
+      }
+    ],
+    "queries_before_throttle": 5,
+    "statistics": {
+      "min_response_time": 1.9101011753082275,
+      "max_response_time": 1.9101011753082275,
+      "avg_response_time": 1.9101011753082275,
+      "median_response_time": 1.9101011753082275,
+      "success_rate": 10.0,
+      "avg_results_per_query": 10.0
+    }
+  },
+  {
+    "engine": "BraveEngine",
+    "total_queries": 10,
+    "successful_queries": 0,
+    "failed_queries": 10,
+    "response_times": [],
+    "total_results": 0,
+    "errors": [
+      {
+        "query": "python programming",
+        "error": "No results returned",
+        "query_number": 1
+      },
+      {
+        "query": "machine learning",
+        "error": "No results returned",
+        "query_number": 2
+      },
+      {
+        "query": "web development",
+        "error": "No results returned",
+        "query_number": 3
+      },
+      {
+        "query": "data science",
+        "error": "No results returned",
+        "query_number": 4
+      },
+      {
+        "query": "artificial intelligence",
+        "error": "No results returned",
+        "query_number": 5
+      },
+      {
+        "query": "cloud computing",
+        "error": "No results returned",
+        "query_number": 6
+      },
+      {
+        "query": "cybersecurity",
+        "error": "No results returned",
+        "query_number": 7
+      },
+      {
+        "query": "blockchain technology",
+        "error": "No results returned",
+        "query_number": 8
+      },
+      {
+        "query": "quantum computing",
+        "error": "No results returned",
+        "query_number": 9
+      },
+      {
+        "query": "natural language processing",
+        "error": "No results returned",
+        "query_number": 10
+      }
+    ],
+    "queries_before_throttle": 0,
+    "statistics": {
+      "min_response_time": 0,
+      "max_response_time": 0,
+      "avg_response_time": 0,
+      "median_response_time": 0,
+      "success_rate": 0.0,
+      "avg_results_per_query": 0
+    }
+  },
+  {
+    "engine": "StartpageEngine",
+    "total_queries": 10,
+    "successful_queries": 0,
+    "failed_queries": 10,
+    "response_times": [],
+    "total_results": 0,
+    "errors": [
+      {
+        "query": "python programming",
+        "error": "No results returned",
+        "query_number": 1
+      },
+      {
+        "query": "machine learning",
+        "error": "No results returned",
+        "query_number": 2
+      },
+      {
+        "query": "web development",
+        "error": "No results returned",
+        "query_number": 3
+      },
+      {
+        "query": "data science",
+        "error": "No results returned",
+        "query_number": 4
+      },
+      {
+        "query": "artificial intelligence",
+        "error": "No results returned",
+        "query_number": 5
+      },
+      {
+        "query": "cloud computing",
+        "error": "No results returned",
+        "query_number": 6
+      },
+      {
+        "query": "cybersecurity",
+        "error": "No results returned",
+        "query_number": 7
+      },
+      {
+        "query": "blockchain technology",
+        "error": "No results returned",
+        "query_number": 8
+      },
+      {
+        "query": "quantum computing",
+        "error": "No results returned",
+        "query_number": 9
+      },
+      {
+        "query": "natural language processing",
+        "error": "No results returned",
+        "query_number": 10
+      }
+    ],
+    "queries_before_throttle": 0,
+    "statistics": {
+      "min_response_time": 0,
+      "max_response_time": 0,
+      "avg_response_time": 0,
+      "median_response_time": 0,
+      "success_rate": 0.0,
+      "avg_results_per_query": 0
+    }
+  },
+  {
+    "engine": "MojeekEngine",
+    "total_queries": 10,
+    "successful_queries": 10,
+    "failed_queries": 0,
+    "response_times": [
+      1.5008718967437744,
+      1.4667956829071045,
+      1.232201337814331,
+      1.4670884609222412,
+      1.4727683067321777,
+      1.4750113487243652,
+      0.8845155239105225,
+      1.469111442565918,
+      1.4829576015472412,
+      1.475639820098877
+    ],
+    "total_results": 100,
+    "errors": [],
+    "queries_before_throttle": 10,
+    "statistics": {
+      "min_response_time": 0.8845155239105225,
+      "max_response_time": 1.5008718967437744,
+      "avg_response_time": 1.3926961421966553,
+      "median_response_time": 1.4709398746490479,
+      "success_rate": 100.0,
+      "avg_results_per_query": 10.0
+    }
+  },
+  {
+    "engine": "QwantEngine",
+    "total_queries": 10,
+    "successful_queries": 0,
+    "failed_queries": 10,
+    "response_times": [],
+    "total_results": 0,
+    "errors": [
+      {
+        "query": "python programming",
+        "error": "No results returned",
+        "query_number": 1
+      },
+      {
+        "query": "machine learning",
+        "error": "No results returned",
+        "query_number": 2
+      },
+      {
+        "query": "web development",
+        "error": "No results returned",
+        "query_number": 3
+      },
+      {
+        "query": "data science",
+        "error": "No results returned",
+        "query_number": 4
+      },
+      {
+        "query": "artificial intelligence",
+        "error": "No results returned",
+        "query_number": 5
+      },
+      {
+        "query": "cloud computing",
+        "error": "No results returned",
+        "query_number": 6
+      },
+      {
+        "query": "cybersecurity",
+        "error": "No results returned",
+        "query_number": 7
+      },
+      {
+        "query": "blockchain technology",
+        "error": "No results returned",
+        "query_number": 8
+      },
+      {
+        "query": "quantum computing",
+        "error": "No results returned",
+        "query_number": 9
+      },
+      {
+        "query": "natural language processing",
+        "error": "No results returned",
+        "query_number": 10
+      }
+    ],
+    "queries_before_throttle": 0,
+    "statistics": {
+      "min_response_time": 0,
+      "max_response_time": 0,
+      "avg_response_time": 0,
+      "median_response_time": 0,
+      "success_rate": 0.0,
+      "avg_results_per_query": 0
+    }
+  },
+  {
+    "engine": "YahooEngine",
+    "total_queries": 10,
+    "successful_queries": 10,
+    "failed_queries": 0,
+    "response_times": [
+      0.8602702617645264,
+      0.9444870948791504,
+      0.918694257736206,
+      0.8092308044433594,
+      0.8228027820587158,
+      0.7587406635284424,
+      0.904688835144043,
+      0.8795666694641113,
+      0.8114736080169678,
+      0.7510471343994141
+    ],
+    "total_results": 70,
+    "errors": [],
+    "queries_before_throttle": 10,
+    "statistics": {
+      "min_response_time": 0.7510471343994141,
+      "max_response_time": 0.9444870948791504,
+      "avg_response_time": 0.8461002111434937,
+      "median_response_time": 0.8415365219116211,
+      "success_rate": 100.0,
+      "avg_results_per_query": 7.0
+    }
+  },
+  {
+    "engine": "YepEngine",
+    "total_queries": 10,
+    "successful_queries": 0,
+    "failed_queries": 10,
+    "response_times": [],
+    "total_results": 0,
+    "errors": [
+      {
+        "query": "python programming",
+        "error": "No results returned",
+        "query_number": 1
+      },
+      {
+        "query": "machine learning",
+        "error": "No results returned",
+        "query_number": 2
+      },
+      {
+        "query": "web development",
+        "error": "No results returned",
+        "query_number": 3
+      },
+      {
+        "query": "data science",
+        "error": "No results returned",
+        "query_number": 4
+      },
+      {
+        "query": "artificial intelligence",
+        "error": "No results returned",
+        "query_number": 5
+      },
+      {
+        "query": "cloud computing",
+        "error": "No results returned",
+        "query_number": 6
+      },
+      {
+        "query": "cybersecurity",
+        "error": "No results returned",
+        "query_number": 7
+      },
+      {
+        "query": "blockchain technology",
+        "error": "No results returned",
+        "query_number": 8
+      },
+      {
+        "query": "quantum computing",
+        "error": "No results returned",
+        "query_number": 9
+      },
+      {
+        "query": "natural language processing",
+        "error": "No results returned",
+        "query_number": 10
+      }
+    ],
+    "queries_before_throttle": 0,
+    "statistics": {
+      "min_response_time": 0,
+      "max_response_time": 0,
+      "avg_response_time": 0,
+      "median_response_time": 0,
+      "success_rate": 0.0,
+      "avg_results_per_query": 0
+    }
+  },
+  {
+    "engine": "MetagerEngine",
+    "total_queries": 10,
+    "successful_queries": 0,
+    "failed_queries": 10,
+    "response_times": [],
+    "total_results": 0,
+    "errors": [
+      {
+        "query": "python programming",
+        "error": "No results returned",
+        "query_number": 1
+      },
+      {
+        "query": "machine learning",
+        "error": "No results returned",
+        "query_number": 2
+      },
+      {
+        "query": "web development",
+        "error": "No results returned",
+        "query_number": 3
+      },
+      {
+        "query": "data science",
+        "error": "No results returned",
+        "query_number": 4
+      },
+      {
+        "query": "artificial intelligence",
+        "error": "No results returned",
+        "query_number": 5
+      },
+      {
+        "query": "cloud computing",
+        "error": "No results returned",
+        "query_number": 6
+      },
+      {
+        "query": "cybersecurity",
+        "error": "No results returned",
+        "query_number": 7
+      },
+      {
+        "query": "blockchain technology",
+        "error": "No results returned",
+        "query_number": 8
+      },
+      {
+        "query": "quantum computing",
+        "error": "No results returned",
+        "query_number": 9
+      },
+      {
+        "query": "natural language processing",
+        "error": "No results returned",
+        "query_number": 10
+      }
+    ],
+    "queries_before_throttle": 0,
+    "statistics": {
+      "min_response_time": 0,
+      "max_response_time": 0,
+      "avg_response_time": 0,
+      "median_response_time": 0,
+      "success_rate": 0.0,
+      "avg_results_per_query": 0
+    }
+  },
+  {
+    "engine": "Search360Engine",
+    "total_queries": 10,
+    "successful_queries": 0,
+    "failed_queries": 10,
+    "response_times": [],
+    "total_results": 0,
+    "errors": [
+      {
+        "query": "python programming",
+        "error": "No results returned",
+        "query_number": 1
+      },
+      {
+        "query": "machine learning",
+        "error": "No results returned",
+        "query_number": 2
+      },
+      {
+        "query": "web development",
+        "error": "No results returned",
+        "query_number": 3
+      },
+      {
+        "query": "data science",
+        "error": "No results returned",
+        "query_number": 4
+      },
+      {
+        "query": "artificial intelligence",
+        "error": "No results returned",
+        "query_number": 5
+      },
+      {
+        "query": "cloud computing",
+        "error": "No results returned",
+        "query_number": 6
+      },
+      {
+        "query": "cybersecurity",
+        "error": "No results returned",
+        "query_number": 7
+      },
+      {
+        "query": "blockchain technology",
+        "error": "No results returned",
+        "query_number": 8
+      },
+      {
+        "query": "quantum computing",
+        "error": "No results returned",
+        "query_number": 9
+      },
+      {
+        "query": "natural language processing",
+        "error": "No results returned",
+        "query_number": 10
+      }
+    ],
+    "queries_before_throttle": 0,
+    "statistics": {
+      "min_response_time": 0,
+      "max_response_time": 0,
+      "avg_response_time": 0,
+      "median_response_time": 0,
+      "success_rate": 0.0,
+      "avg_results_per_query": 0
+    }
+  },
+  {
+    "engine": "SearxEngine",
+    "total_queries": 10,
+    "successful_queries": 2,
+    "failed_queries": 8,
+    "response_times": [
+      1.6443243026733398,
+      32.31236958503723
+    ],
+    "total_results": 20,
+    "errors": [
+      {
+        "query": "python programming",
+        "error": "No results returned",
+        "query_number": 1
+      },
+      {
+        "query": "machine learning",
+        "error": "No results returned",
+        "query_number": 2
+      },
+      {
+        "query": "web development",
+        "error": "No results returned",
+        "query_number": 3
+      },
+      {
+        "query": "artificial intelligence",
+        "error": "No results returned",
+        "query_number": 5
+      },
+      {
+        "query": "cloud computing",
+        "error": "No results returned",
+        "query_number": 6
+      },
+      {
+        "query": "blockchain technology",
+        "error": "No results returned",
+        "query_number": 8
+      },
+      {
+        "query": "quantum computing",
+        "error": "No results returned",
+        "query_number": 9
+      },
+      {
+        "query": "natural language processing",
+        "error": "No results returned",
+        "query_number": 10
+      }
+    ],
+    "queries_before_throttle": 7,
+    "statistics": {
+      "min_response_time": 1.6443243026733398,
+      "max_response_time": 32.31236958503723,
+      "avg_response_time": 16.978346943855286,
+      "median_response_time": 16.978346943855286,
+      "success_rate": 20.0,
+      "avg_results_per_query": 10.0
+    }
+  },
+  {
+    "engine": "SwisscowsEngine",
+    "total_queries": 10,
+    "successful_queries": 0,
+    "failed_queries": 10,
+    "response_times": [],
+    "total_results": 0,
+    "errors": [
+      {
+        "query": "python programming",
+        "error": "No results returned",
+        "query_number": 1
+      },
+      {
+        "query": "machine learning",
+        "error": "No results returned",
+        "query_number": 2
+      },
+      {
+        "query": "web development",
+        "error": "No results returned",
+        "query_number": 3
+      },
+      {
+        "query": "data science",
+        "error": "No results returned",
+        "query_number": 4
+      },
+      {
+        "query": "artificial intelligence",
+        "error": "No results returned",
+        "query_number": 5
+      },
+      {
+        "query": "cloud computing",
+        "error": "No results returned",
+        "query_number": 6
+      },
+      {
+        "query": "cybersecurity",
+        "error": "No results returned",
+        "query_number": 7
+      },
+      {
+        "query": "blockchain technology",
+        "error": "No results returned",
+        "query_number": 8
+      },
+      {
+        "query": "quantum computing",
+        "error": "No results returned",
+        "query_number": 9
+      },
+      {
+        "query": "natural language processing",
+        "error": "No results returned",
+        "query_number": 10
+      }
+    ],
+    "queries_before_throttle": 0,
+    "statistics": {
+      "min_response_time": 0,
+      "max_response_time": 0,
+      "avg_response_time": 0,
+      "median_response_time": 0,
+      "success_rate": 0.0,
+      "avg_results_per_query": 0
+    }
+  },
+  {
+    "engine": "YandexEngine",
+    "total_queries": 10,
+    "successful_queries": 0,
+    "failed_queries": 10,
+    "response_times": [],
+    "total_results": 0,
+    "errors": [
+      {
+        "query": "python programming",
+        "error": "No results returned",
+        "query_number": 1
+      },
+      {
+        "query": "machine learning",
+        "error": "No results returned",
+        "query_number": 2
+      },
+      {
+        "query": "web development",
+        "error": "No results returned",
+        "query_number": 3
+      },
+      {
+        "query": "data science",
+        "error": "No results returned",
+        "query_number": 4
+      },
+      {
+        "query": "artificial intelligence",
+        "error": "No results returned",
+        "query_number": 5
+      },
+      {
+        "query": "cloud computing",
+        "error": "No results returned",
+        "query_number": 6
+      },
+      {
+        "query": "cybersecurity",
+        "error": "No results returned",
+        "query_number": 7
+      },
+      {
+        "query": "blockchain technology",
+        "error": "No results returned",
+        "query_number": 8
+      },
+      {
+        "query": "quantum computing",
+        "error": "No results returned",
+        "query_number": 9
+      },
+      {
+        "query": "natural language processing",
+        "error": "No results returned",
+        "query_number": 10
+      }
+    ],
+    "queries_before_throttle": 0,
+    "statistics": {
+      "min_response_time": 0,
+      "max_response_time": 0,
+      "avg_response_time": 0,
+      "median_response_time": 0,
+      "success_rate": 0.0,
+      "avg_results_per_query": 0
+    }
+  }
+]

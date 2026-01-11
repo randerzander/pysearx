@@ -8,7 +8,7 @@ and parses the results without requiring JavaScript.
 from typing import List, Dict, Any
 import requests
 from lxml import html
-from ..base import SearchEngine, DEFAULT_USER_AGENT, DEFAULT_HEADERS
+from ..base import SearchEngine, RateLimitMixin, DEFAULT_USER_AGENT, DEFAULT_HEADERS, get_proxy_dict
 
 try:
     from ..browser import fetch_with_browser
@@ -17,14 +17,17 @@ except ImportError:
     PLAYWRIGHT_AVAILABLE = False
 
 
-class DuckDuckGoEngine(SearchEngine):
-    """DuckDuckGo search engine implementation."""
+class DuckDuckGoEngine(RateLimitMixin, SearchEngine):
+    """DuckDuckGo search engine implementation with rate limit backoff and proxy fallback."""
     
     def __init__(self):
+        RateLimitMixin.__init__(self)
         self.name = 'DuckDuckGo'
         self.base_url = 'https://html.duckduckgo.com/html/'
         self.timeout = 10
-        self.use_browser = PLAYWRIGHT_AVAILABLE  # Use browser if available
+        self.use_browser = False  # Don't use browser - it gets blocked
+        self._use_proxy = False  # Start without proxy
+        self._failed_without_proxy = False  # Track if direct connection failed
         
     def search(self, query: str, **kwargs) -> List[Dict[str, Any]]:
         """
@@ -37,6 +40,10 @@ class DuckDuckGoEngine(SearchEngine):
         Returns:
             List of result dictionaries with title, url, and description
         """
+        # Check if we're currently rate limited (skip if using proxy)
+        if not self._use_proxy:
+            self._check_rate_limit()
+        
         results = []
         
         try:
@@ -63,14 +70,28 @@ class DuckDuckGoEngine(SearchEngine):
                 headers = DEFAULT_HEADERS.copy()
                 headers['Referer'] = 'https://duckduckgo.com/'
                 
+                # Decide whether to use proxy
+                proxies = None
+                if self._use_proxy or self._failed_without_proxy:
+                    proxies = get_proxy_dict()
+                    if proxies:
+                        print(f"[{self.name}] Using proxy: {proxies['http']}")
+                
                 # Make the request
                 response = requests.post(
                     self.base_url,
                     data=params,
                     headers=headers,
+                    proxies=proxies,
                     timeout=self.timeout
                 )
                 response.raise_for_status()
+                
+                # If we succeeded with proxy, continue using proxies
+                if self._failed_without_proxy and proxies:
+                    print(f"[{self.name}] Proxy worked! Continuing with proxies.")
+                    self._use_proxy = True
+                
                 tree = html.fromstring(response.content)
             
             # Find result links
@@ -106,7 +127,13 @@ class DuckDuckGoEngine(SearchEngine):
                     continue
             
         except requests.RequestException as e:
-            # Network or HTTP errors
+            error_str = str(e)
+            # Check for rate limit
+            if self._is_rate_limit_error(error_str):
+                print(f"[{self.name}] Rate limit detected! Switching to proxy mode.")
+                self._failed_without_proxy = True
+                self._use_proxy = True
+                self._handle_rate_limit()
             raise Exception(f"Failed to query DuckDuckGo: {e}")
         except Exception as e:
             # Parsing or other errors

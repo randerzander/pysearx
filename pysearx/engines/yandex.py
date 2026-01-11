@@ -27,6 +27,9 @@ class YandexEngine(SearchEngine):
         
     def search(self, query: str, **kwargs) -> List[Dict[str, Any]]:
         """
+        # Check if we're currently rate limited
+        self._check_rate_limit()
+        
         Search Yandex for the given query.
         
         Args:
@@ -36,6 +39,9 @@ class YandexEngine(SearchEngine):
         Returns:
             List of result dictionaries with title, url, and description
         """
+        # Check if we're currently rate limited
+        self._check_rate_limit()
+        
         results = []
         
         try:
@@ -119,7 +125,10 @@ class YandexEngine(SearchEngine):
                     continue
             
         except requests.RequestException as e:
-            # Network or HTTP errors
+            error_str = str(e)
+            # Check for rate limit
+            if self._is_rate_limit_error(error_str):
+                self._handle_rate_limit()
             raise Exception(f"Failed to query Yandex: {e}")
         except Exception as e:
             # Parsing or other errors

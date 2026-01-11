@@ -8,7 +8,7 @@ and parses the results.
 from typing import List, Dict, Any
 import requests
 from lxml import html
-from ..base import SearchEngine, DEFAULT_USER_AGENT, DEFAULT_HEADERS
+from ..base import SearchEngine, RateLimitMixin, DEFAULT_USER_AGENT, DEFAULT_HEADERS, get_proxy_dict
 
 try:
     from ..browser import fetch_with_browser
@@ -17,10 +17,11 @@ except ImportError:
     PLAYWRIGHT_AVAILABLE = False
 
 
-class BingEngine(SearchEngine):
+class BingEngine(RateLimitMixin, SearchEngine):
     """Bing search engine implementation."""
     
     def __init__(self):
+        RateLimitMixin.__init__(self)
         self.name = 'Bing'
         self.base_url = 'https://www.bing.com/search'
         self.timeout = 10
@@ -37,6 +38,9 @@ class BingEngine(SearchEngine):
         Returns:
             List of result dictionaries with title, url, and description
         """
+        # Check if we're currently rate limited
+        self._check_rate_limit()
+        
         results = []
         
         try:
@@ -61,11 +65,15 @@ class BingEngine(SearchEngine):
                 headers = DEFAULT_HEADERS.copy()
                 headers['Referer'] = 'https://www.bing.com/'
                 
+                # Get proxy if PROXY_FILE env var is set
+                proxies = get_proxy_dict()
+                
                 # Make the request
                 response = requests.get(
                     self.base_url,
                     params=params,
                     headers=headers,
+                    proxies=proxies,
                     timeout=self.timeout
                 )
                 response.raise_for_status()
@@ -111,7 +119,10 @@ class BingEngine(SearchEngine):
                     continue
             
         except requests.RequestException as e:
-            # Network or HTTP errors
+            error_str = str(e)
+            # Check for rate limit
+            if self._is_rate_limit_error(error_str):
+                self._handle_rate_limit()
             raise Exception(f"Failed to query Bing: {e}")
         except Exception as e:
             # Parsing or other errors

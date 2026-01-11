@@ -20,10 +20,11 @@ pysearx is a simple, single-process Python library that provides a generic searc
 
 - Simple API: just call `search(query)` to get results
 - **DuckDuckGo API used by default** when `ddgs` package is installed (no CAPTCHA/blocking!)
+- **SearXNG support** - Privacy-respecting metasearch engine with automatic instance discovery
 - Sequential or parallel execution modes (parallel uses threading for faster results)
 - Returns results as a list of dictionaries with `title`, `url`, and `description`
-- Support for multiple search engines (14 built-in: DuckDuckGo, Google, Bing, Brave, Startpage, Qwant, Mojeek, Yahoo, Yep, SearX, Swisscows, MetaGer, 360Search, Yandex)
-- API-based engines that avoid CAPTCHA/blocking (DuckDuckGo, Bing)
+- Support for multiple search engines (15 built-in: DuckDuckGo, Google, Bing, Brave, Startpage, Qwant, Mojeek, Yahoo, Yep, SearX, SearXNG, Swisscows, MetaGer, 360Search, Yandex)
+- API-based engines that avoid CAPTCHA/blocking (DuckDuckGo, Bing, SearXNG)
 - Easy to extend with new search engines
 
 ## Installation

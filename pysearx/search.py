@@ -42,23 +42,36 @@ logger = logging.getLogger(__name__)
 
 
 # Default engines to use
+# Only 100% reliable engines are enabled by default
 # DuckDuckGo API engine is used by default (falls back to HTML if ddgs not installed)
+import os
+
 DEFAULT_ENGINES = [
-    _ddg_engine,
-    BraveEngine(),
-    MojeekEngine(),
-    YahooEngine(),
-    Search360Engine(),
-    # GoogleEngine(),  # Disabled by user
-    # BingEngine(),  # Disabled by user
-    # StartpageEngine(),  # Disabled by user
-    # QwantEngine(),  # Disabled by user
-    # YepEngine(),  # Disabled: Returns 403 errors
-    # SearxEngine(),  # Disabled: Returns 403 errors
-    # SwisscowsEngine(),  # Disabled by user
-    # MetagerEngine(),  # Disabled by user
-    # YandexEngine(),  # Disabled by user
+    _ddg_engine,        # DuckDuckGo API - 100% reliable, fast, 20 results
+    YahooEngine(),      # Yahoo - 100% reliable, fast (0.85s), 10-15 results
+    MojeekEngine(),     # Mojeek - 100% reliable, medium (1.4s), 10-12 results
 ]
+
+# Conditionally enable Brave if proxies are available
+# Brave works for ~27 queries, then auto-switches to proxies
+if os.environ.get('PROXY_FILE'):
+    DEFAULT_ENGINES.append(BraveEngine())  # 100% with proxies, 15-20 results
+
+# Optional engines (uncomment to enable):
+# DEFAULT_ENGINES.append(SearxEngine())  # Federated search, ~20% reliable, slow
+#
+# Engines disabled by default (require residential proxies):
+# GoogleEngine(),      # Blocked without residential proxies
+# BingEngine(),        # Blocked without residential proxies
+# StartpageEngine(),   # Blocked without residential proxies
+# QwantEngine(),       # Blocked without residential proxies
+#
+# Engines disabled (other reasons):
+# Search360Engine(),   # Broken - missing RateLimitMixin
+# YepEngine(),         # Returns 403 errors
+# SwisscowsEngine(),   # Low reliability
+# MetagerEngine(),     # Low reliability
+# YandexEngine(),      # Low reliability
 
 
 def search(query: str, engines: Optional[List[SearchEngine]] = None, 
