@@ -30,7 +30,7 @@ class YahooEngine(RateLimitMixin, SearchEngine):
             **kwargs: Additional parameters (currently unused)
             
         Returns:
-            List of result dictionaries with title, url, and description
+            List of result dictionaries with title, url, description (deprecated), and summary
         """
         # Check if we're currently rate limited
         self._check_rate_limit()
@@ -107,7 +107,8 @@ class YahooEngine(RateLimitMixin, SearchEngine):
                         results.append({
                             'title': title,
                             'url': url,
-                            'description': description
+                            'description': description,  # deprecated, use summary
+                            'summary': description
                         })
                         
                 except (AttributeError, IndexError, KeyError, TypeError):
@@ -124,6 +125,8 @@ class YahooEngine(RateLimitMixin, SearchEngine):
             # Parsing or other errors
             raise Exception(f"Failed to parse Yahoo results: {e}")
         
+        # Request succeeded, reset rate limit state
+        self._reset_rate_limit()
         return results
     
     def _parse_url(self, url_string: str) -> str:

@@ -100,7 +100,7 @@ class BingAPIEngine(SearchEngine):
                 - offset: Pagination offset
                 
         Returns:
-            List of result dictionaries with title, url, and description
+            List of result dictionaries with title, url, description (deprecated), and summary
         """
         results = []
         
@@ -123,10 +123,12 @@ class BingAPIEngine(SearchEngine):
             # Extract web pages from response
             if hasattr(response, 'web_pages') and response.web_pages:
                 for result in response.web_pages.value:
+                    snippet = result.snippet if hasattr(result, 'snippet') else ''
                     results.append({
                         'title': result.name,
                         'url': result.url,
-                        'description': result.snippet if hasattr(result, 'snippet') else ''
+                        'description': snippet,  # deprecated, use summary
+                        'summary': snippet
                     })
                     
         except Exception as e:

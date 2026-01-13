@@ -29,7 +29,7 @@ def test_rate_limit_detection():
         ("429 Client Error: Too Many Requests", True),
         ("Rate limit exceeded", True),
         ("Too many requests from your IP", True),
-        ("403 Forbidden", False),
+        ("403 Forbidden", True),  # 403 is treated as blocking/rate limit
         ("Connection timeout", False),
     ]
     
@@ -59,7 +59,9 @@ def test_rate_limit_backoff():
     
     # Trigger rate limit
     engine._handle_rate_limit()
-    print(f"✓ Rate limit triggered (backoff: {engine._backoff_seconds}s)")
+    # Calculate expected backoff time
+    expected_backoff = engine._base_backoff * (2 ** (engine._rate_limit_count - 1))
+    print(f"✓ Rate limit triggered (backoff: {expected_backoff}s)")
     
     # Should now be rate limited
     try:

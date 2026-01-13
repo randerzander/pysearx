@@ -6,6 +6,7 @@ and parses the results.
 """
 
 from typing import List, Dict, Any
+import re
 import requests
 from lxml import html
 from ..base import SearchEngine, RateLimitMixin, DEFAULT_USER_AGENT, DEFAULT_HEADERS, get_proxy_dict
@@ -31,7 +32,7 @@ class BraveEngine(RateLimitMixin, SearchEngine):
             **kwargs: Additional parameters (currently unused)
             
         Returns:
-            List of result dictionaries with title, url, and description
+            List of result dictionaries with title, url, description (deprecated), and summary
         """
         # Check if we're currently rate limited (skip if we're using proxy)
         if not self._use_proxy:
@@ -48,7 +49,7 @@ class BraveEngine(RateLimitMixin, SearchEngine):
             # Use realistic headers
             headers = DEFAULT_HEADERS.copy()
             headers['Referer'] = 'https://search.brave.com/'
-            headers['Accept-Encoding'] = 'identity'  # Avoid brotli compression issues
+            headers['Accept-Encoding'] = 'gzip, deflate'  # Disable brotli (causes decode errors)
             
             # Decide whether to use proxy
             proxies = None
@@ -75,49 +76,51 @@ class BraveEngine(RateLimitMixin, SearchEngine):
             # Parse HTML response
             tree = html.fromstring(response.content)
             
-            # Find result divs - Brave uses specific result containers
-            result_elements = tree.xpath('//div[@data-type="web"]') or \
-                            tree.xpath('//div[contains(@class, "snippet")]')
+            # Find result divs - Brave uses data-type="web" for organic results
+            result_elements = tree.xpath('//div[@data-type="web"]')
             
             for elem in result_elements:
                 try:
-                    # Extract title and URL
-                    link_elem = elem.xpath('.//a[@class="result-header"]') or \
-                               elem.xpath('.//h4/a') or \
-                               elem.xpath('.//a')
+                    # Extract title from div with class containing "title"
+                    title_elem = elem.xpath('.//div[contains(@class, "title")]')
+                    if not title_elem:
+                        continue
+                    title = title_elem[0].text_content().strip()
                     
-                    if not link_elem:
+                    # Extract URL from cite tag
+                    cite_elem = elem.xpath('.//cite')
+                    if not cite_elem:
                         continue
                     
-                    # Get the first valid link
-                    url = link_elem[0].get('href', '')
+                    url = cite_elem[0].text_content().strip()
+                    # Clean up URL - remove spaces and extra text
+                    if url:
+                        url = url.split()[0]  # Take first part before spaces
+                        # Add https if not present
+                        if not url.startswith('http'):
+                            url = 'https://' + url
+                    
                     if not url or url.startswith('#'):
                         continue
                     
-                    # Extract title
-                    title_elem = elem.xpath('.//h4') or \
-                                elem.xpath('.//div[@class="title"]')
-                    if not title_elem:
-                        # Try getting title from link text
-                        title = link_elem[0].text_content().strip()
-                    else:
-                        title = title_elem[0].text_content().strip()
-                    
-                    # Extract description/snippet
-                    snippet_elem = elem.xpath('.//p[@class="snippet-description"]') or \
-                                  elem.xpath('.//div[@class="snippet-description"]') or \
-                                  elem.xpath('.//p')
-                    
+                    # Extract description/snippet - try multiple selectors
                     description = ''
+                    snippet_elem = elem.xpath('.//div[contains(@class, "description")]') or \
+                                  elem.xpath('.//div[contains(@class, "generic-snippet")]') or \
+                                  elem.xpath('.//p[contains(@class, "snippet")]')
+                    
                     if snippet_elem:
                         description = snippet_elem[0].text_content().strip()
+                        # Clean up - remove date prefixes like "3 days ago - "
+                        description = re.sub(r'^\d+\s+(day|hour|minute|second|week|month|year)s?\s+ago\s*-\s*', '', description)
                     
                     # Only add if we have at least title and URL
                     if title and url:
                         results.append({
                             'title': title,
                             'url': url,
-                            'description': description
+                            'description': description,  # deprecated, use summary
+                            'summary': description
                         })
                         
                 except (AttributeError, IndexError, KeyError, TypeError):
@@ -137,4 +140,6 @@ class BraveEngine(RateLimitMixin, SearchEngine):
             # Parsing or other errors
             raise Exception(f"Failed to parse Brave results: {e}")
         
+        # Request succeeded, reset rate limit state
+        self._reset_rate_limit()
         return results

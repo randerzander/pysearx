@@ -31,7 +31,7 @@ class YepEngine(SearchEngine):
             **kwargs: Additional parameters (currently unused)
             
         Returns:
-            List of result dictionaries with title, url, and description
+            List of result dictionaries with title, url, description (deprecated), and summary
         """
         # Check if we're currently rate limited
         self._check_rate_limit()
@@ -90,7 +90,8 @@ class YepEngine(SearchEngine):
                         results.append({
                             'title': title,
                             'url': url,
-                            'description': snippet
+                            'description': snippet,  # deprecated, use summary
+                            'summary': snippet
                         })
                         
                 except (AttributeError, KeyError, TypeError):

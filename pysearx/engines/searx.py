@@ -110,7 +110,7 @@ class SearxEngine(SearchEngine):
                 - max_retries: Maximum instance retries (default: 3)
             
         Returns:
-            List of result dictionaries with title, url, and description
+            List of result dictionaries with title, url, description (deprecated), and summary
         """
         # Get parameters
         num_results = kwargs.get('num_results', None)
@@ -190,7 +190,8 @@ class SearxEngine(SearchEngine):
                     results.append({
                         'title': title,
                         'url': url,
-                        'description': description
+                        'description': description,  # deprecated, use summary
+                        'summary': description
                     })
             except (AttributeError, KeyError, TypeError):
                 continue
@@ -260,7 +261,8 @@ class SearxEngine(SearchEngine):
                     results.append({
                         'title': title,
                         'url': url,
-                        'description': description
+                        'description': description,  # deprecated, use summary
+                        'summary': description
                     })
                     
             except (AttributeError, IndexError, KeyError, TypeError):

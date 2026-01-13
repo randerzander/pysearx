@@ -43,9 +43,9 @@ class RateLimitMixin:
                 wait_time = int(self._rate_limited_until - current_time)
                 raise Exception(f"Rate limited. Try again in {wait_time} seconds.")
             else:
-                # Rate limit expired, reset count
+                # Rate limit expired, clear the timer but keep the count
+                # Count will only reset after a successful request
                 self._rate_limited_until = 0
-                self._rate_limit_count = 0
     
     def _handle_rate_limit(self):
         """Mark engine as rate limited with exponential backoff."""
@@ -69,6 +69,11 @@ class RateLimitMixin:
                 'rate limit' in error_str.lower() or 
                 'too many requests' in error_str.lower() or
                 '403' in error_str)  # 403 Forbidden also indicates blocking
+    
+    def _reset_rate_limit(self):
+        """Reset rate limit state after a successful request."""
+        self._rate_limited_until = 0
+        self._rate_limit_count = 0
 
 
 class SearchEngine:
@@ -86,7 +91,8 @@ class SearchEngine:
             List of result dictionaries, each containing:
                 - title: Result title
                 - url: Result URL
-                - description: Result description/snippet
+                - description: Result description/snippet (deprecated, use summary)
+                - summary: Result summary/description (preferred field name)
         """
         raise NotImplementedError("Subclasses must implement search()")
 

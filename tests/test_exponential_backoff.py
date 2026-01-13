@@ -92,14 +92,23 @@ def test_exponential_backoff():
     engine2._rate_limited_until = time.time() - 1  # Expired
     try:
         engine2._check_rate_limit()
-        print(f"After expiration, count reset to: {engine2._rate_limit_count}")
+        print(f"After expiration (no explicit reset), count = {engine2._rate_limit_count}")
         
-        if engine2._rate_limit_count == 0:
-            print("✅ Counter successfully resets after backoff expires")
+        if engine2._rate_limit_count == 3:
+            print("✅ Counter persists after backoff expires (as expected)")
         else:
-            print("⚠️  Counter didn't reset")
+            print("⚠️  Counter changed unexpectedly")
     except:
         print("⚠️  Unexpected error")
+    
+    # Now simulate a successful request
+    engine2._reset_rate_limit()
+    print(f"After successful request (_reset_rate_limit), count = {engine2._rate_limit_count}")
+    
+    if engine2._rate_limit_count == 0:
+        print("✅ Counter successfully resets after successful request")
+    else:
+        print("⚠️  Counter didn't reset after successful request")
     
     print("\n" + "=" * 70)
     

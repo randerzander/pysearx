@@ -10,6 +10,7 @@ Basic usage:
     results = search("python programming")
     for result in results:
         print(f"{result['title']}: {result['url']}")
+        print(f"Summary: {result['summary']}")
 """
 
 from .search import search

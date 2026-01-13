@@ -9,10 +9,8 @@ from typing import List, Dict, Any, Optional
 import threading
 import logging
 from .base import SearchEngine
-from .engines.google import GoogleEngine
 from .engines.bing import BingEngine
 from .engines.brave import BraveEngine
-from .engines.startpage import StartpageEngine
 from .engines.qwant import QwantEngine
 from .engines.mojeek import MojeekEngine
 from .engines.yahoo import YahooEngine
@@ -93,13 +91,15 @@ def search(query: str, engines: Optional[List[SearchEngine]] = None,
         List of result dictionaries, each containing:
             - title: Result title (str)
             - url: Result URL (str)
-            - description: Result description/snippet (str)
+            - description: Result description/snippet (str) - deprecated, use summary
+            - summary: Result summary/description (str) - preferred field
             - engine: Name of the engine that returned this result (str)
             
     Example:
         >>> results = search("python programming")
         >>> for result in results:
         ...     print(f"{result['title']}: {result['url']}")
+        ...     print(f"Summary: {result['summary']}")
         
         >>> # Use parallel mode for faster results
         >>> results = search("python programming", parallel=True)

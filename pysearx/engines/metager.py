@@ -37,7 +37,7 @@ class MetagerEngine(SearchEngine):
             **kwargs: Additional parameters (currently unused)
             
         Returns:
-            List of result dictionaries with title, url, and description
+            List of result dictionaries with title, url, description (deprecated), and summary
         """
         # Check if we're currently rate limited
         self._check_rate_limit()
@@ -120,7 +120,8 @@ class MetagerEngine(SearchEngine):
                         results.append({
                             'title': title,
                             'url': url,
-                            'description': description
+                            'description': description,  # deprecated, use summary
+                            'summary': description
                         })
                         
                 except (AttributeError, IndexError, KeyError, TypeError):

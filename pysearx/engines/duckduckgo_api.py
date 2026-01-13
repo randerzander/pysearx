@@ -52,7 +52,7 @@ class DuckDuckGoAPIEngine(SearchEngine):
             **kwargs: Additional parameters (currently unused)
             
         Returns:
-            List of result dictionaries with title, url, and description
+            List of result dictionaries with title, url, description, and summary
         """
         results = []
         
@@ -66,12 +66,14 @@ class DuckDuckGoAPIEngine(SearchEngine):
                 # Convert ddgs results to our standard format
                 for result in search_results:
                     # ddgs package returns: {title, href, body}
-                    # We map to our standard format: {title, url, description}
+                    # We map to our standard format: {title, url, description, summary}
                     if result.get('href') and result.get('title'):
+                        summary_text = result.get('body', '')
                         results.append({
                             'title': result.get('title', ''),
                             'url': result.get('href', ''),  # href -> url
-                            'description': result.get('body', '')  # body -> description
+                            'description': summary_text,  # body -> description (deprecated)
+                            'summary': summary_text  # body -> summary (preferred)
                         })
                         
         except Exception as e:

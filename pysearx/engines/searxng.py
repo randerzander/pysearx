@@ -43,7 +43,7 @@ class SearxngEngine(SearchEngine):
                 - category: Search category (default: 'general')
             
         Returns:
-            List of result dictionaries with title, url, and description
+            List of result dictionaries with title, url, description (deprecated), and summary
         """
         results = []
         
@@ -125,7 +125,8 @@ class SearxngEngine(SearchEngine):
                 results.append({
                     'title': title,
                     'url': url,
-                    'description': description
+                    'description': description,  # deprecated, use summary
+                    'summary': description
                 })
             except (AttributeError, KeyError, TypeError):
                 continue
@@ -219,5 +220,6 @@ class SearxngEngine(SearchEngine):
         return {
             'title': title,
             'url': url,
-            'description': description
+            'description': description,  # deprecated, use summary
+            'summary': description
         }
